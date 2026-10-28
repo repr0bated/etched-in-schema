@@ -110,7 +110,8 @@ the router, and the 3tched.com UI.
 | `oscal/` | OSCAL catalog, profiles, component definitions (Compliance Trestle workspace) |
 | `routing/` | tag router: profile → components → operations |
 | `enforcement/` | boundary compiler: OSCAL rules → grants, budgets, OpenFlow policy |
-| `cms/` | the CMS and its control behaviours |
+| `consumer/` | drop-in consumer apps (Slack first) |
+| `cms/` | the CMS and its control behaviours (background) |
 | `web3/` | index log, Merkle anchoring |
 | `ui/` | Svelte components for the 3tched.com app |
 | `docs/` | 3tched resources, subsidiary/sled model, prior art and positioning, how to win |
