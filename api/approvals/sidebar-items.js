@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["ApprovalDecision"],"mod":["judge","request","ticket"],"struct":["Approval"]};

@@ -1,0 +1,428 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>State of Play - Etched in Schema</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="A self-contained 3tched identity that turns business goals into deployed, verified infrastructure.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-3b0e3cf7.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-032c8853.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Etched in Schema</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/repr0bated/etched-in-schema" title="Git repository" aria-label="Git repository">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/repr0bated/etched-in-schema/blob/master/src/spark-brief.md" title="Suggest an edit" aria-label="Suggest an edit" rel="edit">
+                            <span class=fa-svg id="git-edit-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M421.7 220.3l-11.3 11.3-22.6 22.6-205 205c-6.6 6.6-14.8 11.5-23.8 14.1L30.8 511c-8.4 2.5-17.5 .2-23.7-6.1S-1.5 489.7 1 481.2L38.7 353.1c2.6-9 7.5-17.2 14.1-23.8l205-205 22.6-22.6 11.3-11.3 33.9 33.9 62.1 62.1 33.9 33.9zM96 353.9l-9.3 9.3c-.9 .9-1.6 2.1-2 3.4l-25.3 86 86-25.3c1.3-.4 2.5-1.1 3.4-2l9.3-9.3H112c-8.8 0-16-7.2-16-16V353.9zM453.3 19.3l39.4 39.4c25 25 25 65.5 0 90.5l-14.5 14.5-22.6 22.6-11.3 11.3-33.9-33.9-62.1-62.1L314.3 67.7l11.3-11.3 22.6-22.6 14.5-14.5c25-25 65.5-25 90.5 0z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="etched-in-schema--brief-for-muse-spark"><a class="header" href="#etched-in-schema--brief-for-muse-spark">Etched in Schema — brief for Muse Spark</a></h1>
+<p>Hackathon: Meta Model API, <strong>Startup Track — judged on a working product</strong>.
+Builder: Jeremy Hobson (3tched).</p>
+<p><strong>Scope (owner, 2026-10-28):</strong> the identity/3tched platform predates the
+hackathon and is used through its interfaces. The new, judged development is
+(1) compliance routing, (2) rule enforcement, (3) policy, and (4) a drop-in
+consumer app (team chat first). The UI is optional. See README “Goals” for the
+golden path. Sections below about the avatar, CMS demo and on-chain anchoring
+are background, not the critical path.
+State as of 2026-10-28. Everything marked <strong>proven</strong> was demonstrated on the
+host that day; everything else is planned.</p>
+<h2 id="the-project-in-one-paragraph"><a class="header" href="#the-project-in-one-paragraph">The project in one paragraph</a></h2>
+<p>A self-contained 3tched identity — the “twin”, the living embodiment of a
+3tched subsidiary — turns a business goal into deployed, verified
+infrastructure. It acts only through its own typed filesystem (3tchedFS),
+every action is authorised against its capabilities and leaves a
+tamper-evident receipt, and a Web3 index anchored on-chain lets anyone verify
+who did what, under what authority, without trusting the agent or operator.
+That link between on-chain artifacts and accountable, authorised actors is the
+gap blocking Web3 adoption.</p>
+<h2 id="proven-today"><a class="header" href="#proven-today">Proven today</a></h2>
+<ul>
+<li><strong>Identity container</strong>: <code>3tchedCtlChatbot</code> (Incus, pool <code>3tched</code>, profile
+<code>3tched-lungs</code>), identity session <code>&lt;subsidiary-session&gt;</code>,
+service principal, persist volume, kept running by runit <code>chatbot-identity</code>.</li>
+<li><strong>First-person operation call</strong>: inside the container, write the plain JSON
+arguments to <code>/run/mount/3tchedfs/operations/&lt;plugin&gt;/&lt;method&gt;/call</code> (open
+read-write, write, fsync, read back on the same handle). Example
+<code>identity_sled/get_own_identity</code> with <code>{}</code> returned the identity, operation
+<code>51c8f91c-c2f1-4688-a985-fb41684adfff</code>, chain events 10389/10390, outcome
+completed. The bridge identifies the caller from the kernel peer over the
+lungs Unix socket, checks the exact capability, commits via MutationEngine.</li>
+<li><strong>Infrastructure operations available to the identity</strong>: <code>incus/*</code>
+(create/start/stop/snapshot/devices), <code>ovsdb_bridge/*</code> (bridges, ports,
+transact), plus ~70 plugins. Each call is checked against the identity’s
+grants.</li>
+<li><strong>No network path to 3tched</strong>: the twin talks to 3tched only through its FUSE
+mount. Its only network will be the internet (Meta API, blockchain).</li>
+<li><strong>Chat path</strong>: UI (<code>http://&lt;door-ip&gt;:8080</code>) → door <code>&lt;door-ip&gt;:8090</code> →
+<code>chat_router.Chat</code> → zeroclaw router on <code>127.0.0.1:8084</code> (protocol
+<code>zeroclaw.v1</code>) → model. Every turn receipted.</li>
+<li><strong>Avatar</strong>: <code>IdentityAvatar.svelte</code> speaks a fixed intro script (exact
+wording, no model) and answers spoken or typed questions via the chat path.</li>
+</ul>
+<h2 id="where-things-are"><a class="header" href="#where-things-are">Where things are</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Thing</th><th>Path</th></tr>
+</thead>
+<tbody>
+<tr><td>Backend (Rust workspace)</td><td><code>/srv/git/odbus-verified</code> — read its <code>AGENTS.md</code> and <code>HANDOFF.md</code> first</td></tr>
+<tr><td>UI (SvelteKit + json-render)</td><td><code>/srv/git/3tched.com</code> (has uncommitted WIP — do not publish it as-is)</td></tr>
+<tr><td>UI build actually live</td><td>scratch worktree of 3tched.com HEAD + <code>tched_router</code>→<code>chat_router</code> + avatar</td></tr>
+<tr><td>This repo</td><td><code>/srv/git/etched-in-schema</code> — Web3 index schema, LLC declaration schema</td></tr>
+<tr><td>Recovered execution tracker</td><td>branch <code>recover/execution-tracker</code>, worktree <code>/srv/git/odbus-tracker-recover</code> (compiles; not deployed)</td></tr>
+<tr><td>Router config</td><td><code>/var/lib/tched-router/config.toml</code> (root; backups <code>*.bak-20261028-*</code>)</td></tr>
+<tr><td>Qdrant</td><td><code>127.0.0.1:6333</code> — <code>repos_specs_docs_voyage_4_lite</code>, <code>repos_repomix_voyage_context_4</code>, <code>snowball_footprints</code>, <code>blockchain_footprints</code></td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="rules-that-must-not-be-broken"><a class="header" href="#rules-that-must-not-be-broken">Rules that must not be broken</a></h2>
+<ul>
+<li>The plugin IS the schema. Backend schemas live only in Rust plugins under
+<code>crates/op-plugins/src/state_plugins/</code>, sealed into blobs. No standalone
+schema files in op-dbus (that is why drafts live in this repo).</li>
+<li>UI is Svelte/SvelteKit + Vite + json-render’s Svelte renderer only. Every
+visible element is a catalog component.</li>
+<li>Never edit Cozo directly, never bypass a permission denial, never add or
+remove Btrfs members outside explicit identity provisioning.</li>
+<li>Deployment is <code>./activate-golden.sh</code> / <code>op-release-launch release</code>
+(btrfs send/receive slots). Never hand-copy binaries onto the host as a deploy.</li>
+<li>One Cargo process at a time; release builds need <code>CXXFLAGS="-include cstdint"</code>.</li>
+<li>Tests only when the owner asks.</li>
+<li>Commit and push at the end of every working turn (owner policy, 2026-10-28): public repo <code>github.com/repr0bated/etched-in-schema</code>, branch <code>master</code>. No turn ends with unpushed work.</li>
+</ul>
+<h2 id="plan-10-days"><a class="header" href="#plan-10-days">Plan (10 days)</a></h2>
+<ol>
+<li>OSCAL catalog of 3tched capabilities with a tag taxonomy; component
+definitions for 3–5 plugins (Compliance Trestle is installed: <code>trestle</code>).</li>
+<li>Tag routing: profile → components → plugin operations.</li>
+<li>Boundary rules compiled into capability grants and budgets (the bridge
+already enforces grants on every call).</li>
+<li>“Create a CMS for this business”: business declaration (start with
+<code>schema/llc-declaration.schema.json</code>) → profile → provision via the twin,
+receipts recorded as OSCAL assessment results and anchored on-chain.</li>
+<li>UI: avatar intro, then “enough about me — here’s what I can do for your
+business” (scripted once the business is chosen), vitals and nerve-trace
+views fed by real receipts, OSCAL views.
+Golden path (must work three times in a row before any stretch goal):
+scripted intro → “create a CMS for this business” from one small declaration
+and one OSCAL profile → the twin provisions one or two real things through its
+own mount, with a visible nerve trace and receipts → one receipt anchored
+on-chain → a judge verifies it themselves.</li>
+</ol>
+<p>Out of scope (owner, 2026-10-28): moving the identity between hosts
+(“astral projection”) — no business case. Client acquisition is optional; add
+it only if it fits the flow.</p>
+<h2 id="known-open-issues"><a class="header" href="#known-open-issues">Known open issues</a></h2>
+<ul>
+<li>Meta model not yet wired into the router (no Meta API key on the host;
+Junie reaches Muse Spark through its JetBrains login). Hermes has a <code>Meta</code>
+custom provider stub (<code>HERMES_CUSTOM_META_API_KEY</code>).</li>
+<li>Router turn costs ~15k tokens (skills bundle removed to halve it). Qwen does
+not reliably emit text tool calls; MCP compact tools are connected
+(<code>https://&lt;door-ip&gt;:8090/mcp</code>) but retrieval answers came back empty.</li>
+<li>Live state reads through the mount (<code>plugins/*/value.json</code>) return EIO.</li>
+<li>Next release will fail activation: <code>notebook-sources-sync</code> cannot pass its
+30 s check after restart. Fix before releasing.</li>
+<li>Re-key of the core chatbot to the WireGuard server key (session
+<code>&lt;root-session&gt;</code>) has no supported op yet.</li>
+<li>UI overlay on <code>dashboard-release</code> is runtime-only; lost on reboot or release.</li>
+</ul>
+<h2 id="cms-compliant-by-construction-owner-direction-2026-10-28"><a class="header" href="#cms-compliant-by-construction-owner-direction-2026-10-28">CMS: compliant by construction (owner direction, 2026-10-28)</a></h2>
+<p>The CMS is the showcase because it comes out usable <em>and</em> evidently
+controlled. Pick a handful of controls whose effect is visible on stage; each
+control → a CMS behaviour → evidence (receipt or anchor):</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Control area</th><th>Visible behaviour</th><th>Evidence</th></tr>
+</thead>
+<tbody>
+<tr><td>PII handling (NIST 800-53 PT)</td><td>automatic redaction on publish; original kept only in the owner’s private scope</td><td>redaction operation receipt naming the triggering policy</td></tr>
+<tr><td>Audit (AU)</td><td>every create/edit/publish attributable</td><td>receipt chain: who, capability, when</td></tr>
+<tr><td>Access control (AC)</td><td>roles compiled into capability grants</td><td>a live denial showing the exact missing capability</td></tr>
+<tr><td>Retention (SI-12)</td><td>scheduled expiry/archive</td><td>scheduled operation receipt</td></tr>
+<tr><td>Integrity</td><td>published versions hash-anchored</td><td>on-chain anchor a judge can check</td></tr>
+</tbody>
+</table>
+</div>
+<p>Pitch wording: “implements and evidences these controls” — never “compliant”
+or “certified” (an assessor declares compliance).</p>
+<h2 id="remote-identities-established-design-owner-2026-10-28"><a class="header" href="#remote-identities-established-design-owner-2026-10-28">Remote identities: established design (owner, 2026-10-28)</a></h2>
+<p>WireGuard is only the establishment step: the peer key proves the identity
+once, the decoy issues the signed peer proof (OIA1) and the session gets its
+sealed credential (SID1). After that it is zero trust — every call carries the
+credential and the door’s interceptor re-verifies it, over any transport
+(internet, Cloudflare). 3tched-fs <code>Credential</code> mode is the remote form of the
+lungs. The mechanism exists; it needs testing and refinement, not a rebuild.
+Do not add a mesh (Netmaker/Cloudflare) as an identity layer.</p>
+<h2 id="progress-log"><a class="header" href="#progress-log">Progress log</a></h2>
+<ul>
+<li>
+<p>2026-10-28: Junie pinned to Muse Spark for this repo — new
+<code>.junie/config.json</code> sets <code>model: muse-spark-1.3</code>, <code>effort: medium</code>
+(matches <code>~/.junie/settings.json</code> launch default, provider <code>meta</code>).
+IDE Junie routes via JetBrains login, no key needed. Headless <code>junie --task</code>
+still unauthenticated (“Cannot find authorization”, proven this date):
+needs <code>JUNIE_META_API_KEY</code> from <code>https://ai.developer.meta.com/</code>
+(documented in <code>docs/RUNTIME.md</code>); same key gap blocks runtime Meta calls
+for the drop-in.</p>
+</li>
+<li>
+<p>2026-10-28: LiteLLM wired to Meta Model API — <code>META_API_KEY</code> (48ch),
+<code>META_MODEL=muse-spark-1.3</code>, <code>META_MODEL_BASE_URL=https://api.meta.ai/v1</code>
+present in <code>~/.bash_secrets</code> and <code>/home/3tched/.config/etched/env</code> (0600).
+Venv <code>~/.venvs/litellm-meta</code> (litellm lib) proven: <code>openai/muse-spark-1.3</code></p>
+<ul>
+<li>api_base override returns <code>litellm-meta-ok</code> (~7s, 204 reasoning tokens).
+Helper <code>tools/litellm_meta.py</code> uses only <code>META_*</code> env, <code>max_tokens=800</code>
+default. Note: SPARK-BRIEF line 148 <code>JUNIE_META_API_KEY</code> gap is separate
+(headless Junie auth); runtime Meta calls are unblocked.</li>
+</ul>
+</li>
+<li>
+<p>2026-10-28: omp in this repo is meta+jev only — new <code>.omp/config.yml</code>
+(project scope, other dirs unaffected): <code>disabledProviders</code> denies all 22
+non-meta chat providers (proven: <code>omp models</code> here lists 1 provider,
+<code>openai</code>/<code>salad</code> gone; /tmp still lists 23, smol still global salad).
+<code>modelRoles</code> pins default/smol/slow/plan/advisor to meta, judge stays
+<code>typesafe/jev-latest</code>; all <code>task.agentModelOverrides</code> mapped to meta.
+<code>enabledProviders</code> allowlist does NOT work at project scope (tested).
+Shell env fixed for consistency: <code>~/.bashrc</code> now sources
+<code>~/.bash_secrets</code> first; <code>~/.profile</code> stale <code>/home/admin/.bash_secrets</code>
+path repointed to <code>$HOME</code>. Clean-env <code>omp -p --model meta/muse-spark-1.3</code>
+returns <code>omp-meta-ok</code> (~7s). Broker cred hash == <code>META_API_KEY</code> hash.</p>
+</li>
+<li>
+<p>2026-10-28: OSCAL foundation built (planned, trestle-validated): <code>oscal/catalogs/etched-catalog/catalog.json</code> (5 controls: etched-pt-1 PII redaction, etched-au-1 audit, etched-ac-1 access control, etched-si-1 retention, etched-in-1 integrity; each names candidate plugin ops + evidence; <code>trestle validate</code> passes), <code>oscal/TAG-TAXONOMY.md</code> v1 (tag -&gt; control -&gt; operations), <code>oscal/profiles/small-business-portal/profile.json</code> (all 5 controls + two-person-rule tailoring; validated). <code>routing/DATA-MODEL.md</code> v1 proposes Request -&gt; Route -&gt; Decision -&gt; Outcome before code. Next: implement pure <code>route(Request, Profile)</code> + policy engine skeleton.</p>
+</li>
+<li>
+<p>2026-10-28 (owner): <strong>Junie is out, omp is in.</strong> omp is the coding agent for this repo (model <code>meta/muse-spark-1.3</code>, same Meta credential as <code>META_API_KEY</code>). Entry point: <code>AGENTS.md</code> → <code>START-HERE.md</code> → <code>CONTEXT.md</code>. Earlier Junie notes above are historical. New spec: <code>docs/APPROVALS-SPEC.md</code>.</p>
+</li>
+<li>
+<p>2026-10-28: <code>approvals/</code> crate implements APPROVALS-SPEC §§4-7 as pure Rust (request types, canonical sha256 args hash, truth table with fixed 0.7/0.3 thresholds, single-use TicketStore; <code>cargo test</code> 12/12 incl. acceptance criteria 3 and 5). No I/O or network yet. Next: policy engine skeleton + <code>route(Request, Profile)</code>.</p>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="start-here.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="drop-in-spec.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="start-here.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="drop-in-spec.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

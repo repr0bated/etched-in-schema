@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["TriState","Verdict"],"fn":["decide","judge"],"struct":["Judgments"]};

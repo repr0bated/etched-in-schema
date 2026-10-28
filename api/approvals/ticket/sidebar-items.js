@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["ApprovalKind","TicketError"],"struct":["Ticket","TicketStore"]};
