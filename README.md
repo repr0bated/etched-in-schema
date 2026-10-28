@@ -100,7 +100,7 @@ published interfaces (see [docs/3TCHED-RESOURCES.md](docs/3TCHED-RESOURCES.md)).
 | `cms/` | the CMS and its control behaviours |
 | `web3/` | index log, Merkle anchoring |
 | `ui/` | Svelte components for the 3tched.com app |
-| `docs/` | 3tched resources, subsidiary/sled model, prior art and positioning |
+| `docs/` | 3tched resources, subsidiary/sled model, prior art and positioning, how to win |
 | `SPARK-BRIEF.md` | current state, rules, open issues, progress log |
 
 ## Working rules
