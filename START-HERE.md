@@ -15,7 +15,8 @@ document in priority order (scope first). If you need a single source, the
 originals are:
 
 1. `README.md` — goals, golden path, new vs. existing
-2. `docs/DROP-IN-SPEC.md` — the drop-in to build (generator + team chat + generated backends)
+2. `docs/DEV-CYCLE.md` — **blob → mount → identity**: how every new method is sealed, projected and called
+2b. `docs/DROP-IN-SPEC.md` — the drop-in to build (generator + team chat + generated backends)
 3. `docs/RUNTIME.md` — where things run (develop as `jeremy`, run as `3tched`), calling the platform, supervision, network, models, secrets
 4. `SPARK-BRIEF.md` — state, rules, open issues, progress log
 5. `docs/3TCHED-RESOURCES.md` — the platform you call, and how (call-file protocol)

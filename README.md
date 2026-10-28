@@ -64,6 +64,17 @@ Out of the critical path: the avatar/embodiment, moving identities between
 hosts, client acquisition, and on-chain anchoring (kept only if it fits once
 the golden path works).
 
+## How it works: the method is the blob
+
+Every capability the identity has is a **sealed blob**: the plugin's schema,
+sealed into the platform's catalog. The identity's own **3tchedFS mount**
+projects each sealed method as a typed file; the identity (the chatbot) acts
+**only** by calling those files, and every call is admitted, checked against
+the exact capability, committed and **receipted**. New methods built here reach
+the identity the same way: logic in this repo → plugin registration → sealed
+blob → operation file in the mount → call → receipt. See
+[docs/DEV-CYCLE.md](docs/DEV-CYCLE.md).
+
 ## What is new vs. what already exists
 
 Everything in **this repository** is developed during the hackathon. It is
