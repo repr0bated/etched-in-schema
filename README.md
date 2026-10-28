@@ -13,6 +13,16 @@ or its operator.
 Built for the Meta Model API hackathon (Startup Track — judged on a working
 product) by Jeremy Hobson, founder of 3tched.
 
+> **The method is the blob — the identity acts only through 3tchedFS.**
+> Every method is a plugin schema sealed into a blob. The identity's own
+> 3tchedFS mount projects each sealed method as a typed file
+> (`operations/<plugin>/<method>/call`); the identity writes arguments there,
+> the bridge admits it by kernel identity, checks the exact capability, commits
+> and returns a receipt. No MCP, no direct API calls, no `ovs-*` commands.
+> Every new method built here follows: **logic in this repo → plugin
+> registration → sealed blob → operation file in the mount → call → receipt.**
+> See [`docs/DEV-CYCLE.md`](docs/DEV-CYCLE.md).
+
 ## Why
 
 AI agents can reason about goals, but they rarely have a durable identity,
@@ -63,17 +73,6 @@ result, the receipts, and any redaction applied.
 Out of the critical path: the avatar/embodiment, moving identities between
 hosts, client acquisition, and on-chain anchoring (kept only if it fits once
 the golden path works).
-
-## How it works: the method is the blob
-
-Every capability the identity has is a **sealed blob**: the plugin's schema,
-sealed into the platform's catalog. The identity's own **3tchedFS mount**
-projects each sealed method as a typed file; the identity (the chatbot) acts
-**only** by calling those files, and every call is admitted, checked against
-the exact capability, committed and **receipted**. New methods built here reach
-the identity the same way: logic in this repo → plugin registration → sealed
-blob → operation file in the mount → call → receipt. See
-[docs/DEV-CYCLE.md](docs/DEV-CYCLE.md).
 
 ## What is new vs. what already exists
 

@@ -1,5 +1,7 @@
 # AGENTS.md — etched-in-schema (read by omp)
 
+**Core rule — 3tchedFS dev cycle:** every method is a sealed blob; the identity acts only by writing to its mount's call files (`operations/<plugin>/<method>/call`) and keeps the receipt. New methods: logic here → plugin registration → sealed blob → operation file → call → receipt (`docs/DEV-CYCLE.md`). No MCP, no direct API calls, no `ovs-*` commands.
+
 Start with `START-HERE.md`, then read `CONTEXT.md` in full (it bundles every doc).
 
 ## Mandatory skill preload

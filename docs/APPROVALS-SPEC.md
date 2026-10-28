@@ -1,5 +1,7 @@
 # Approvals spec: two-approval root, policy co-signer, break-glass
 
+> How these methods reach the identity: sealed blob → 3tchedFS operation file → call → receipt. See [`DEV-CYCLE.md`](DEV-CYCLE.md).
+
 Part of the judged **policy** and **rule enforcement** work. Status: **planned**
 (nothing here is built yet). Existing platform pieces are marked **existing**.
 

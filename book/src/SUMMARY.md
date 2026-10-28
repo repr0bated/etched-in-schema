@@ -1,12 +1,12 @@
 # Summary
 
+[The Method Is the Blob: 3tchedFS Dev Cycle](dev-cycle.md)
 [Project](readme.md)
 [Start Here](start-here.md)
 [State of Play](spark-brief.md)
 
 # Specs
 
-- [Dev Cycle: blob → mount → identity](dev-cycle.md)
 - [Drop-in Spec](drop-in-spec.md)
 - [Approvals Spec](approvals-spec.md)
 - [Runtime](runtime.md)

@@ -4,6 +4,17 @@ You are building **Etched in Schema** for the Meta Model API hackathon,
 **Startup Track — judged on a working product**. Builder: Jeremy Hobson
 (3tched). Use Meta's models (Muse Spark) for the product's AI steps.
 
+
+> **The method is the blob — the identity acts only through 3tchedFS.**
+> Every method is a plugin schema sealed into a blob. The identity's own
+> 3tchedFS mount projects each sealed method as a typed file
+> (`operations/<plugin>/<method>/call`); the identity writes arguments there,
+> the bridge admits it by kernel identity, checks the exact capability, commits
+> and returns a receipt. No MCP, no direct API calls, no `ovs-*` commands.
+> Every new method built here follows: **logic in this repo → plugin
+> registration → sealed blob → operation file in the mount → call → receipt.**
+> See [`docs/DEV-CYCLE.md`](docs/DEV-CYCLE.md).
+
 ## Load everything
 
 Read **`CONTEXT.md`** in full before doing anything (it is generated and
@@ -15,8 +26,8 @@ document in priority order (scope first). If you need a single source, the
 originals are:
 
 1. `README.md` — goals, golden path, new vs. existing
-2. `docs/DEV-CYCLE.md` — **blob → mount → identity**: how every new method is sealed, projected and called
-2b. `docs/DROP-IN-SPEC.md` — the drop-in to build (generator + team chat + generated backends)
+2. `docs/DEV-CYCLE.md` — **read first after the README: blob → mount → identity**
+3. `docs/DROP-IN-SPEC.md` — the drop-in to build (generator + team chat + generated backends)
 3. `docs/RUNTIME.md` — where things run (develop as `jeremy`, run as `3tched`), calling the platform, supervision, network, models, secrets
 4. `SPARK-BRIEF.md` — state, rules, open issues, progress log
 5. `docs/3TCHED-RESOURCES.md` — the platform you call, and how (call-file protocol)

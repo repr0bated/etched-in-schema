@@ -1,5 +1,7 @@
 # Drop-in spec: one generator, every surface
 
+> How these methods reach the identity: sealed blob → 3tchedFS operation file → call → receipt. See [`DEV-CYCLE.md`](DEV-CYCLE.md).
+
 The drop-in is the existing 3tched UI generator, repurposed: the same spec
 pipeline that renders the web UI also renders into consumer apps (team chat
 first), and every action it exposes is governed by the new compliance
