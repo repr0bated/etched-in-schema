@@ -22,7 +22,10 @@ product) by Jeremy Hobson, founder of 3tched.
 > Every new method built here follows: **logic in this repo → plugin
 > registration → sealed blob → operation file in the mount → call → receipt.**
 > The UI is derived from the same blobs: screens from sealed schemas, actions
-> call the same sealed methods and show their receipts.
+> call the same sealed methods and show their receipts. Each plugin is a
+> **schema feed** (schema + committed state, streamed); state has one writer
+> (MutationEngine) and is archived as receipts, Btrfs snowball snapshots and
+> vectors.
 > See [`docs/DEV-CYCLE.md`](docs/DEV-CYCLE.md).
 
 ## Why
