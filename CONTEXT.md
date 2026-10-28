@@ -413,10 +413,13 @@ controlled with `sudo sv start|stop|status <name>`. Model new units on
 
 ## Models
 
-- **Meta (required for the product's AI steps)**: Muse Spark is reachable
-  from Junie in the IDE. A server-side Meta API key for the running service is
-  **not yet available** — needed before the drop-in can call Meta at runtime.
-  Hermes has a `Meta` provider stub (`HERMES_CUSTOM_META_API_KEY`).
+- **Meta (required for the product's AI steps)**: Meta's Model API,
+  `https://api.meta.ai/v1` (OpenAI-style `/chat/completions`), model
+  `muse-spark-1.3` (**proven**, 2026-10-28). Credentials: `META_API_KEY`,
+  `META_MODEL`, `META_MODEL_BASE_URL` — in `~/.bash_secrets` for `jeremy`
+  (development) and in `/home/3tched/.config/etched/env` (owner `3tched`,
+  mode 0600) for the running service. The model reasons before answering:
+  give it a generous `max_tokens` (800+).
 - **TypeSafe Jev** (judgments): `TYPESAFE_API_KEY` in `~/.bash_secrets` (user
   `jeremy`); see `review/jev_strategy.py` for the request format.
 - 3tched's chat router (`127.0.0.1:8084`) currently uses a Qwen model; do not
@@ -594,6 +597,17 @@ credential and the door's interceptor re-verifies it, over any transport
 (internet, Cloudflare). 3tched-fs `Credential` mode is the remote form of the
 lungs. The mechanism exists; it needs testing and refinement, not a rebuild.
 Do not add a mesh (Netmaker/Cloudflare) as an identity layer.
+
+## Progress log
+
+- 2026-10-28: Junie pinned to Muse Spark for this repo — new
+  `.junie/config.json` sets `model: muse-spark-1.3`, `effort: medium`
+  (matches `~/.junie/settings.json` launch default, provider `meta`).
+  IDE Junie routes via JetBrains login, no key needed. Headless `junie --task`
+  still unauthenticated ("Cannot find authorization", proven this date):
+  needs `JUNIE_META_API_KEY` from `https://ai.developer.meta.com/`
+  (documented in `docs/RUNTIME.md`); same key gap blocks runtime Meta calls
+  for the drop-in.
 
 ---
 
