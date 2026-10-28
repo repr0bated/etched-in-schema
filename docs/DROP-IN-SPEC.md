@@ -120,3 +120,22 @@ enforcement, so every surface behaves identically.
 
 New UI frameworks (web stays Svelte + json-render), direct plugin calls from
 adapters, adapters holding grants, a second policy engine per target.
+
+## 6. Generated backends (owner direction, 2026-10-28)
+
+The system does not adopt an existing CMS. It **references** them (Payload,
+Strapi, Wagtail, Ghost, Decap) as a feature checklist and data-model source —
+content types and fields, relations, roles, draft/review/publish, versioning,
+media, webhooks — and **generates its own backend**:
+
+- A generated CMS is a 3tched-native definition: content types are schemas,
+  promoted to a sealed plugin; content lives in Cozo through MutationEngine;
+  every create/edit/publish is a receipted mutation; policy, redaction and
+  approvals apply at write time; the UI comes from the existing generator.
+- **The model generates definitions, never backend code.** From a business
+  declaration and the reference feature set, Meta's model produces content
+  types, fields, roles, workflows and policies; the definition is validated
+  against a fixed meta-schema (like UI specs against the catalog).
+- **Fixed, tested code** implements CRUD, publish, versioning, redaction and
+  receipts once, for any valid definition — so no generated backend can carry
+  a bug the model invented.
