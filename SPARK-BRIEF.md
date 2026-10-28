@@ -169,3 +169,5 @@ Do not add a mesh (Netmaker/Cloudflare) as an identity layer.
   path repointed to `$HOME`. Clean-env `omp -p --model meta/muse-spark-1.3`
   returns `omp-meta-ok` (~7s). Broker cred hash == `META_API_KEY` hash.
 - 2026-10-28: OSCAL foundation built (planned, trestle-validated): `oscal/catalogs/etched-catalog/catalog.json` (5 controls: etched-pt-1 PII redaction, etched-au-1 audit, etched-ac-1 access control, etched-si-1 retention, etched-in-1 integrity; each names candidate plugin ops + evidence; `trestle validate` passes), `oscal/TAG-TAXONOMY.md` v1 (tag -> control -> operations), `oscal/profiles/small-business-portal/profile.json` (all 5 controls + two-person-rule tailoring; validated). `routing/DATA-MODEL.md` v1 proposes Request -> Route -> Decision -> Outcome before code. Next: implement pure `route(Request, Profile)` + policy engine skeleton.
+
+- 2026-10-28 (owner): **Junie is out, omp is in.** omp is the coding agent for this repo (model `meta/muse-spark-1.3`, same Meta credential as `META_API_KEY`). Entry point: `AGENTS.md` → `START-HERE.md` → `CONTEXT.md`. Earlier Junie notes above are historical. New spec: `docs/APPROVALS-SPEC.md`.
