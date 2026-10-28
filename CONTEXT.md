@@ -757,6 +757,15 @@ How an identity works as the embodiment of a subsidiary. Marked **existing**
   and a notification on a second channel — so even the owner cannot act as
   root silently. A designated human second approver replaces this later.
   **Planned.**
+- **Second approver = the control-plane chatbot** (owner decision): it co-signs
+  the owner's root actions **by policy, not persuasion** — it receives only a
+  structured request (operation, resource, identity, applicable policy), never
+  free-text justification; atomic judgments (the chatbot or Jev) feed code that
+  decides approve/refuse; anything outside written policy is refused and only
+  break-glass can override; every decision is receipted with its reasons. It
+  approves but never executes. Tiers: routine = owner + chatbot within policy;
+  out of policy = refused, break-glass only; later = human second approver.
+  **Planned.**
 - **Subsidiaries**: Linux users on the system. Each subsidiary is bounded by
   its home directory. **Planned.**
 - **Hackathon subsidiary**: embodied by identity `b0c777e3…` (today's
