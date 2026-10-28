@@ -137,3 +137,14 @@ credential and the door's interceptor re-verifies it, over any transport
 (internet, Cloudflare). 3tched-fs `Credential` mode is the remote form of the
 lungs. The mechanism exists; it needs testing and refinement, not a rebuild.
 Do not add a mesh (Netmaker/Cloudflare) as an identity layer.
+
+## Progress log
+
+- 2026-10-28: Junie pinned to Muse Spark for this repo — new
+  `.junie/config.json` sets `model: muse-spark-1.3`, `effort: medium`
+  (matches `~/.junie/settings.json` launch default, provider `meta`).
+  IDE Junie routes via JetBrains login, no key needed. Headless `junie --task`
+  still unauthenticated ("Cannot find authorization", proven this date):
+  needs `JUNIE_META_API_KEY` from `https://ai.developer.meta.com/`
+  (documented in `docs/RUNTIME.md`); same key gap blocks runtime Meta calls
+  for the drop-in.

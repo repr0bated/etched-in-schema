@@ -58,10 +58,20 @@ controlled with `sudo sv start|stop|status <name>`. Model new units on
 
 ## Models
 
-- **Meta (required for the product's AI steps)**: Muse Spark is reachable
-  from Junie in the IDE. A server-side Meta API key for the running service is
-  **not yet available** — needed before the drop-in can call Meta at runtime.
-  Hermes has a `Meta` provider stub (`HERMES_CUSTOM_META_API_KEY`).
+- **Meta (required for the product's AI steps)**: project Junie config
+  (`.junie/config.json`) pins `muse-spark-1.3` at `medium` effort, matching
+  the user default in `~/.junie/settings.json` (`modelForLaunch`,
+  `providerForLaunch: meta`). In the IDE this routes through the JetBrains
+  login — no key needed (**proven**: settings already selected it).
+- **Junie CLI (headless) auth — still missing (2026-10-28)**: non-interactive
+  `junie` needs `JUNIE_META_API_KEY` (Meta Model API key from
+  `https://ai.developer.meta.com/`, `Settings > API`) or `--meta-api-key`.
+  `junie --task ...` in this repo fails with "Cannot find authorization"
+  until that is set. Never commit the key; export it per-session or keep it
+  in `~/.bash_secrets` (mode 0600).
+- **Server-side Meta key for the running service**: still not available —
+  needed before the drop-in can call Meta at runtime. Hermes has a `Meta`
+  provider stub (`HERMES_CUSTOM_META_API_KEY`).
 - **TypeSafe Jev** (judgments): `TYPESAFE_API_KEY` in `~/.bash_secrets` (user
   `jeremy`); see `review/jev_strategy.py` for the request format.
 - 3tched's chat router (`127.0.0.1:8084`) currently uses a Qwen model; do not
