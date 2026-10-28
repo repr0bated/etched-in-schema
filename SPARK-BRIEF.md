@@ -78,10 +78,15 @@ gap blocking Web3 adoption.
 5. UI: avatar intro, then "enough about me — here's what I can do for your
    business" (scripted once the business is chosen), vitals and nerve-trace
    views fed by real receipts, OSCAL views.
-6. Finale: "astral projection" — btrfs send the identity to another host,
-   anchor chain head before and after to prove continuity on-chain.
+Golden path (must work three times in a row before any stretch goal):
+scripted intro → "create a CMS for this business" from one small declaration
+and one OSCAL profile → the twin provisions one or two real things through its
+own mount, with a visible nerve trace and receipts → one receipt anchored
+on-chain → a judge verifies it themselves.
 
-Client acquisition is optional; add it only if it fits the flow.
+Out of scope (owner, 2026-10-28): moving the identity between hosts
+("astral projection") — no business case. Client acquisition is optional; add
+it only if it fits the flow.
 
 ## Known open issues
 
