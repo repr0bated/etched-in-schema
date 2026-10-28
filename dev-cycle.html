@@ -35,7 +35,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-b5aedcdb.js";
+            window.path_to_searchindex_js = "searchindex-b80fc186.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-dd34a01b.js"></script>
@@ -207,7 +207,7 @@ method built for the hackathon follows this path — that is the dev cycle.</p>
 <tbody>
 <tr><td><strong>blob ↔ method</strong></td><td>A method exists only as a sealed blob; its schema is the single source of its arguments, results and required capability</td><td><code>ls /dev/shm/opdbus/plugin-blobs/</code> (72 blobs today); <code>opblob inspect &lt;file.blob&gt;</code></td></tr>
 <tr><td><strong>blob ↔ mount</strong></td><td>3tchedFS projects each sealed method as <code>operations/&lt;plugin&gt;/&lt;method&gt;/{call,metadata.json,input.schema.json,output.schema.json}</code>; a new blob appears in every identity’s mount, with no mount change</td><td><code>/home/3tched/Hackathon/3tchedfs/operations/</code> (as <code>3tched</code>)</td></tr>
-<tr><td><strong>mount ↔ chatbot</strong></td><td>The identity acts only through its mount: call files, or <code>3tched-fs mcp --mount &lt;mount&gt;</code> which serves the sealed methods as MCP tools dispatched as that identity; <code>3tched-fs toolsets --publish</code> announces them on EMQX</td><td>call-file helper <code>3tched-callfile</code>; <code>3tched-fs mcp --help</code></td></tr>
+<tr><td><strong>mount ↔ chatbot</strong></td><td>The identity acts <strong>only</strong> through its mount, by writing to call files. There is no MCP path: MCP was removed and replaced by 3tchedFS. <code>3tched-fs toolsets --publish</code> only announces the sealed method list on EMQX; it does not call anything</td><td>call-file helper <code>3tched-callfile</code></td></tr>
 </tbody>
 </table>
 </div>
@@ -230,8 +230,8 @@ automatically.</li>
 <li><strong>Grant.</strong> The identity gets the method’s exact capability (an owner-approved
 grant change). Without it, the call is refused with the capability named —
 which is itself demonstrable.</li>
-<li><strong>Call and verify.</strong> As the identity: write arguments to the call file (or
-use the MCP tool), read the result, keep the <code>operation_id</code> and
+<li><strong>Call and verify.</strong> As the identity: write arguments to the call file,
+read the result from the same handle, keep the <code>operation_id</code> and
 <code>event_hash</code> as evidence.</li>
 </ol>
 <h2 id="mounts-today-2026-10-28"><a class="header" href="#mounts-today-2026-10-28">Mounts today (2026-10-28)</a></h2>
@@ -249,7 +249,9 @@ use the MCP tool), read the result, keep the <code>operation_id</code> and
 </div>
 <p>Known limits: live state reads (<code>plugins/*/value.json</code>) return EIO — use
 operations; the <code>3tched-fs call --mount</code> CLI cannot drive guest-kernel mounts —
-use call files or <code>3tched-fs mcp</code>.</p>
+use the call files directly. Do not use the leftover <code>3tched-fs mcp</code>
+subcommand or the bridge’s <code>/mcp</code> endpoint: MCP is retired in favour of the
+mount.</p>
 
                     </main>
 

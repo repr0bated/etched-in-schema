@@ -35,7 +35,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-b5aedcdb.js";
+            window.path_to_searchindex_js = "searchindex-b80fc186.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-dd34a01b.js"></script>
@@ -282,8 +282,8 @@ it only if it fits the flow.</p>
 <ul>
 <li><del>Meta model not wired</del> — resolved 2026-10-28: Meta’s Model API (<code>https://api.meta.ai/v1</code>, <code>muse-spark-1.3</code>) is wired for development (<code>~/.bash_secrets</code>) and the running service (<code>/home/3tched/.config/etched/env</code>); see <code>docs/RUNTIME.md</code>. 3tched’s own chat router still uses a Qwen model.</li>
 <li>Router turn costs ~15k tokens (skills bundle removed to halve it). Qwen does
-not reliably emit text tool calls; MCP compact tools are connected
-(<code>https://&lt;door-ip&gt;:8090/mcp</code>) but retrieval answers came back empty.</li>
+not reliably emit text tool calls. (MCP is retired — replaced by the 3tchedFS
+mount — so do not rely on the router’s MCP tools.)</li>
 <li>Live state reads through the mount (<code>plugins/*/value.json</code>) return EIO.</li>
 <li>Next release will fail activation: <code>notebook-sources-sync</code> cannot pass its
 30 s check after restart. Fix before releasing.</li>
