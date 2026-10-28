@@ -9,6 +9,11 @@ How an identity works as the embodiment of a subsidiary. Marked **existing**
   system core, to be fused with the WireGuard server key so it can never be a
   peer (session `58287215-0136-f7c3-0a02-d51a593b75ef`). **Planned** — no
   supported re-key operation yet.
+- **Root has no execution rights**: it holds authority but executes nothing
+  itself; execution is delegated through the execution tracker. A human acting
+  as root needs **two approvals** (two-person rule). Today `elevation` offers a
+  single-use ticket (`authorize_task`, 60 s TTL); the second approval is new
+  work. **Planned.**
 - **Subsidiaries**: Linux users on the system. Each subsidiary is bounded by
   its home directory. **Planned.**
 - **Hackathon subsidiary**: embodied by identity `b0c777e3…` (today's
