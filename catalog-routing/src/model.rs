@@ -39,42 +39,29 @@ pub struct Profile {
     pub id: String,
     pub controls: Vec<String>,
 }
-
-/// The identity's compiled grants: exact capability strings
-/// (`"<plugin>.<method>"`, or `"<plugin>.*"` for a whole plugin).
+/// The identity's compiled grants: exact sealed capability strings.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Grants {
     pub capabilities: Vec<String>,
 }
 
 impl Grants {
-    /// Exact match, or a `<plugin>.*` grant covering the capability.
+    /// Sealed capabilities are opaque strings: exact match only.
     pub fn covers(&self, capability: &str) -> bool {
-        if self.capabilities.iter().any(|c| c == capability) {
-            return true;
-        }
-        match capability.split_once('.') {
-            Some((plugin, _)) => self
-                .capabilities
-                .iter()
-                .any(|c| c == &format!("{plugin}.*")),
-            None => false,
-        }
+        self.capabilities.iter().any(|c| c == capability)
     }
 }
 
 /// A candidate plugin operation: `operations/<plugin>/<method>/call`.
+///
+/// `capability` is the exact sealed capability (`opblob inspect`), or
+/// `None` when no blob is sealed for the method yet — a method exists if
+/// and only if its blob is in the sealed catalog.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Operation {
     pub plugin: String,
     pub method: String,
-}
-
-impl Operation {
-    /// The exact capability enforcement checks.
-    pub fn required_capability(&self) -> String {
-        format!("{}.{}", self.plugin, self.method)
-    }
+    pub capability: Option<String>,
 }
 
 /// The verdict. Refusals name the missing capability and the rule;
@@ -86,7 +73,11 @@ pub enum Verdict {
         missing_capability: Option<String>,
         rule: String,
     },
-    NeedsApproval { have: u32, need: u32, rule: String },
+    NeedsApproval {
+        have: u32,
+        need: u32,
+        rule: String,
+    },
 }
 
 /// The decision: candidate operations plus the verdict on them.
@@ -101,22 +92,22 @@ mod tests {
     use super::*;
 
     #[test]
-    fn grants_cover_exact_plugin_wildcard_and_miss() {
+    fn grants_cover_exact_capability_only() {
         let grants = Grants {
-            capabilities: vec!["cron.schedule".into(), "workflows.*".into()],
+            capabilities: vec!["cron.invoke".into()],
         };
-        assert!(grants.covers("cron.schedule"));
-        assert!(grants.covers("workflows.cancel"));
-        assert!(!grants.covers("identity_sled.get"));
-        assert!(!grants.covers("nocaps"));
+        assert!(grants.covers("cron.invoke"));
+        assert!(!grants.covers("cron.read"));
+        assert!(!grants.covers("cron"));
     }
 
     #[test]
-    fn operation_capability_is_plugin_dot_method() {
+    fn operation_carries_sealed_capability() {
         let op = Operation {
             plugin: "cron".into(),
-            method: "schedule".into(),
+            method: "create_job".into(),
+            capability: Some("cron.invoke".into()),
         };
-        assert_eq!(op.required_capability(), "cron.schedule");
+        assert_eq!(op.capability.as_deref(), Some("cron.invoke"));
     }
 }

@@ -1,8 +1,9 @@
 //! The decision: allow / refuse / needs-approval.
 //!
 //! Order (`docs/DROP-IN-SPEC.md` §2.2, `routing/DATA-MODEL.md`): match
-//! controls → root needs two humans → capability check → allow. A control
-//! miss refuses before grants are consulted; grants never come from tags.
+//! controls → root needs two humans → fail closed on unsealed methods →
+//! allow the grant-covered subset. A control miss refuses before grants
+//! are consulted; grants never come from tags.
 
 use crate::catalogs::compliance;
 use crate::model::{Decision, Grants, Profile, Request, Verdict};
@@ -19,10 +20,7 @@ pub fn decide(request: &Request, profile: &Profile, grants: &Grants) -> Decision
             },
         };
     }
-    let operations: Vec<_> = matches
-        .iter()
-        .flat_map(|m| m.operations.clone())
-        .collect();
+    let operations: Vec<_> = matches.iter().flat_map(|m| m.operations.clone()).collect();
 
     if compliance::is_root(&request.tags) {
         return Decision {
@@ -36,29 +34,45 @@ pub fn decide(request: &Request, profile: &Profile, grants: &Grants) -> Decision
     }
 
     for op in &operations {
-        let capability = op.required_capability();
-        if !grants.covers(&capability) {
-            let rule = matches
-                .iter()
-                .find(|m| {
-                    m.operations
-                        .iter()
-                        .any(|o| o.required_capability() == capability)
-                })
-                .map(|m| m.control.clone())
-                .unwrap_or_default();
+        if op.capability.is_none() {
             return Decision {
                 operations: vec![],
                 verdict: Verdict::Refuse {
-                    missing_capability: Some(capability),
-                    rule,
+                    missing_capability: None,
+                    rule: format!("method-not-sealed:{}.{}", op.plugin, op.method),
                 },
             };
         }
     }
 
+    let (covered, uncovered): (Vec<_>, Vec<_>) = operations.into_iter().partition(|op| {
+        op.capability
+            .as_deref()
+            .is_some_and(|cap| grants.covers(cap))
+    });
+    if covered.is_empty() {
+        let op = &uncovered[0];
+        let capability = op.capability.clone().unwrap_or_default();
+        let rule = matches
+            .iter()
+            .find(|m| {
+                m.operations
+                    .iter()
+                    .any(|o| o.capability.as_deref() == Some(capability.as_str()))
+            })
+            .map(|m| m.control.clone())
+            .unwrap_or_default();
+        return Decision {
+            operations: vec![],
+            verdict: Verdict::Refuse {
+                missing_capability: Some(capability),
+                rule,
+            },
+        };
+    }
+
     Decision {
-        operations,
+        operations: covered,
         verdict: Verdict::Allow,
     }
 }
@@ -94,14 +108,13 @@ mod tests {
     fn full_grants() -> Grants {
         Grants {
             capabilities: vec![
-                "schema_tag_registry.tag-registry.get-policy".into(),
-                "schema_tag_registry.*".into(),
-                "elevation.authorize_task".into(),
-                "identity_sled.*".into(),
-                "routing_decision.*".into(),
-                "cron.schedule".into(),
-                "workflows.*".into(),
-                "web3.*".into(),
+                "cap.governance.schema-tag-registry.read@v1".into(),
+                "elevation.authorize".into(),
+                "cap.identity.sled.self.read@v1".into(),
+                "cap.governance.routing-decision.read@v1".into(),
+                "cron.invoke".into(),
+                "workflows.write".into(),
+                "identity_sled.read".into(),
             ],
         }
     }
@@ -110,7 +123,7 @@ mod tests {
     fn allow_when_controls_match_and_grants_cover() {
         let d = decide(&request(&["audit"]), &profile(), &full_grants());
         assert_eq!(d.verdict, Verdict::Allow);
-        assert_eq!(d.operations.len(), 2);
+        assert_eq!(d.operations.len(), 3);
     }
 
     #[test]
@@ -128,17 +141,44 @@ mod tests {
 
     #[test]
     fn refuse_names_missing_capability_and_rule() {
-        let grants = Grants {
-            capabilities: vec!["workflows.*".into()],
-        };
-        let d = decide(&request(&["retention"]), &profile(), &grants);
+        let d = decide(
+            &request(&["retention"]),
+            &profile(),
+            &Grants {
+                capabilities: vec![],
+            },
+        );
         assert_eq!(
             d.verdict,
             Verdict::Refuse {
-                missing_capability: Some("cron.schedule".into()),
+                missing_capability: Some("cron.invoke".into()),
                 rule: "etched-si-1".into(),
             }
         );
+    }
+
+    #[test]
+    fn allow_covered_subset_drops_uncovered() {
+        let grants = Grants {
+            capabilities: vec!["workflows.write".into()],
+        };
+        let d = decide(&request(&["retention"]), &profile(), &grants);
+        assert_eq!(d.verdict, Verdict::Allow);
+        assert_eq!(d.operations.len(), 1);
+        assert_eq!(d.operations[0].method, "start_workflow");
+    }
+
+    #[test]
+    fn refuse_unsealed_method_before_grants() {
+        let d = decide(&request(&["integrity"]), &profile(), &full_grants());
+        assert_eq!(
+            d.verdict,
+            Verdict::Refuse {
+                missing_capability: None,
+                rule: "method-not-sealed:web3.anchor".into(),
+            }
+        );
+        assert!(d.operations.is_empty());
     }
 
     #[test]

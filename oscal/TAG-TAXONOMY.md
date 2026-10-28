@@ -6,13 +6,13 @@ control in `catalogs/etched-catalog/catalog.json`, stored as OSCAL props
 `schema_tag_registry` (tag semantics + owner-scoped policies); this file is
 the draft, the registry is authoritative at runtime.
 
-| Tag | Control | Plugin operations (candidate) | Evidence |
+| Tag | Control | Sealed operations (candidate) | Evidence |
 |---|---|---|---|
-| `pii` | `etched-pt-1` | `schema_tag_registry/tag-registry.get-policy` (evaluate redaction policy) | redaction receipt naming policy |
-| `audit` | `etched-au-1` | `identity_sled/*`, `routing_decision/*` | operation receipt (`operation_id`, `event_hash`) |
-| `access-control` | `etched-ac-1` | `elevation/authorize_task`, `schema_tag_registry/*` | refusal receipt (missing capability + rule); approval record |
-| `retention` | `etched-si-1` | `cron/schedule`, `workflows/*` | scheduled-operation receipt |
-| `integrity` | `etched-in-1` | `identity_sled/*` (event hash) → `web3/` index → on-chain anchor | anchor record (index entry + tx) |
+| `pii` | `etched-pt-1` | `schema_tag_registry/get_policy` | redaction receipt naming policy |
+| `audit` | `etched-au-1` | `identity_sled/get_own_identity`, `routing_decision/get_decision`, `routing_decision/list_decisions` | operation receipt (`operation_id`, `event_hash`) |
+| `access-control` | `etched-ac-1` | `elevation/authorize_task`, `schema_tag_registry/get_tag` | refusal receipt (missing capability + rule); approval record |
+| `retention` | `etched-si-1` | `cron/create_job`, `workflows/start_workflow` | scheduled-operation receipt |
+| `integrity` | `etched-in-1` | `identity_sled/get_identity`; anchor needs a sealed `web3` method (none yet — drafts only) | anchor record (index entry + tx) |
 
 Qualifier tags (planned, for the router data model in `routing/DATA-MODEL.md`):
 `data:private` / `data:public`, `action:read` / `action:write` /

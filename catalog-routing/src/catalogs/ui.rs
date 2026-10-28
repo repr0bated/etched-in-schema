@@ -50,22 +50,18 @@ pub fn check(target: Surface, component: &str, rows: Option<usize>) -> Support {
     match target {
         Surface::Web => Support::Full,
         Surface::TeamChat => match component {
-            "heading" | "text" | "button" | "action" | "key_value" | "list"
-            | "status" | "progress" | "receipt" | "refusal" | "approval_request"
-            | "redaction_notice" | "policy_decision" => Support::Full,
+            "heading" | "text" | "button" | "action" | "key_value" | "list" | "status"
+            | "progress" | "receipt" | "refusal" | "approval_request" | "redaction_notice"
+            | "policy_decision" => Support::Full,
             "table" => match rows {
-                Some(n) if n > 20 => {
-                    Support::Fallback(FallbackKind::AttachmentPlusSummary)
-                }
+                Some(n) if n > 20 => Support::Fallback(FallbackKind::AttachmentPlusSummary),
                 _ => Support::Full,
             },
             "select" | "input" => Support::Fallback(FallbackKind::Modal),
             _ => Support::Unsupported,
         },
         Surface::Teams | Surface::Email => match component {
-            "receipt" | "refusal" | "approval_request" | "redaction_notice" => {
-                Support::Unsupported
-            }
+            "receipt" | "refusal" | "approval_request" | "redaction_notice" => Support::Unsupported,
             _ => Support::Unsupported,
         },
     }
@@ -93,10 +89,7 @@ mod tests {
             check(Surface::TeamChat, "table", Some(500)),
             Support::Fallback(FallbackKind::AttachmentPlusSummary)
         );
-        assert_eq!(
-            check(Surface::TeamChat, "table", Some(5)),
-            Support::Full
-        );
+        assert_eq!(check(Surface::TeamChat, "table", Some(5)), Support::Full);
     }
 
     #[test]
@@ -110,9 +103,6 @@ mod tests {
     #[test]
     fn planned_targets_are_explicit() {
         assert_eq!(target_status(Surface::Teams), TargetStatus::Planned);
-        assert_eq!(
-            check(Surface::Teams, "text", None),
-            Support::Unsupported
-        );
+        assert_eq!(check(Surface::Teams, "text", None), Support::Unsupported);
     }
 }

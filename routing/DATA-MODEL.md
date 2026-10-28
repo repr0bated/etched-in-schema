@@ -17,14 +17,13 @@ Outcome   { decision_ref, operation_id?, event_hash?, outcome, redaction? } // r
 
 ## Tag → control → operation table (initial)
 
-| Request example | Tags | Controls | Candidate operations |
-|---|---|---|---|
-| publish portal article | `pii`, `action:publish` | `etched-pt-1`, `etched-au-1`, `etched-in-1` | `schema_tag_registry/tag-registry.get-policy` → redacted publish → index |
-| show my receipts | `audit`, `action:read` | `etched-au-1` | `identity_sled/*`, `routing_decision/*` |
+| publish portal article | `pii`, `action:publish` | `etched-pt-1`, `etched-au-1`, `etched-in-1` | `schema_tag_registry/get_policy` → redacted publish → index |
+| show my receipts | `audit`, `action:read` | `etched-au-1` | `identity_sled/get_own_identity`, `routing_decision/get_decision` |
 | add staff member | `access-control`, `action:write` | `etched-ac-1`, `etched-au-1` | `elevation/authorize_task` (if root: 2 approvals) |
-| set 90-day expiry | `retention`, `action:write` | `etched-si-1`, `etched-au-1` | `cron/schedule`, `workflows/*` |
-| anchor release | `integrity`, `approval:root` | `etched-in-1`, `etched-ac-1` | index entry → anchor (2 approvals) |
+| set 90-day expiry | `retention`, `action:write` | `etched-si-1`, `etched-au-1` | `cron/create_job`, `workflows/start_workflow` |
+| anchor release | `integrity`, `approval:root` | `etched-in-1`, `etched-ac-1` | index entry → anchor (2 approvals; anchor needs a sealed method) |
 | out-of-bounds op | any | matching control | **refuse**: `{missing_capability, rule}` — first-class result |
+| unsealed candidate | any | matching control | **refuse**: `method-not-sealed:<plugin>.<method>` — fail closed |
 
 ## Decisions and rendering
 

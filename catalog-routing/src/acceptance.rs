@@ -5,8 +5,8 @@
 mod tests {
     use crate::catalogs::models::{select, ModelEntry};
     use crate::catalogs::ui::{check, Support};
-    use crate::model::*;
     use crate::decide;
+    use crate::model::*;
 
     fn profile() -> Profile {
         Profile {
@@ -24,10 +24,10 @@ mod tests {
     fn grants() -> Grants {
         Grants {
             capabilities: vec![
-                "schema_tag_registry.tag-registry.get-policy".into(),
-                "identity_sled.*".into(),
-                "routing_decision.*".into(),
-                "web3.*".into(),
+                "cap.governance.schema-tag-registry.read@v1".into(),
+                "cap.identity.sled.self.read@v1".into(),
+                "cap.governance.routing-decision.read@v1".into(),
+                "identity_sled.read".into(),
             ],
         }
     }
@@ -45,22 +45,26 @@ mod tests {
     #[test]
     fn publish_article_routes_redaction_then_index() {
         let d = decide(
-            &request(ActionKind::Publish, Surface::Web, &["pii", "action:publish"]),
+            &request(
+                ActionKind::Publish,
+                Surface::Web,
+                &["pii", "action:publish"],
+            ),
             &profile(),
             &grants(),
         );
         assert_eq!(d.verdict, Verdict::Allow);
-        assert!(
-            d.operations
-                .iter()
-                .any(|o| o.method == "tag-registry.get-policy")
-        );
+        assert!(d.operations.iter().any(|o| o.method == "get_policy"));
     }
 
     #[test]
     fn show_receipts_is_allowed_read() {
         let d = decide(
-            &request(ActionKind::Read, Surface::TeamChat, &["audit", "action:read"]),
+            &request(
+                ActionKind::Read,
+                Surface::TeamChat,
+                &["audit", "action:read"],
+            ),
             &profile(),
             &grants(),
         );
@@ -92,14 +96,18 @@ mod tests {
     #[test]
     fn out_of_bounds_refusal_names_capability() {
         let d = decide(
-            &request(ActionKind::Write, Surface::Web, &["retention", "action:write"]),
+            &request(
+                ActionKind::Write,
+                Surface::Web,
+                &["retention", "action:write"],
+            ),
             &profile(),
             &grants(),
         );
         assert_eq!(
             d.verdict,
             Verdict::Refuse {
-                missing_capability: Some("cron.schedule".into()),
+                missing_capability: Some("cron.invoke".into()),
                 rule: "etched-si-1".into(),
             }
         );
