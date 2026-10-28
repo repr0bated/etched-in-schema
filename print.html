@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-80b4d409.js";
+            window.path_to_searchindex_js = "searchindex-d28378e4.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-e5db6bcb.js"></script>
@@ -209,6 +209,25 @@ method built for the hackathon follows this path — that is the dev cycle.</p>
 </tbody>
 </table>
 </div>
+<h2 id="the-ui-is-in-the-same-cycle"><a class="header" href="#the-ui-is-in-the-same-cycle">The UI is in the same cycle</a></h2>
+<p>The UI is <strong>derived from the blobs</strong>, never written against a separate API:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Step</th><th>What happens</th></tr>
+</thead>
+<tbody>
+<tr><td>Screens</td><td>Rendered from a plugin’s <strong>sealed schema</strong> (<code>schema_renderer.render_schema</code>) — a new method’s blob gives it a form and result view automatically</td></tr>
+<tr><td>Components</td><td>Only components declared in the catalog sealed in the <code>json_render</code> blob; a generated spec is <strong>validated against that catalog</strong> before it is shown</td></tr>
+<tr><td>Actions</td><td>Call the <strong>same sealed method</strong> for whoever is acting: a human through the door (the one generic <code>PluginService/CallMethod</code>, with their own credential); the identity through its mount’s call file. Same blob, same capability check, same receipt</td></tr>
+<tr><td>Results</td><td>Every action shows its <strong>receipt</strong> (operation id, outcome, capability) — and a refusal shows the missing capability</td></tr>
+</tbody>
+</table>
+</div>
+<p>So a new method needs no UI code to appear: seal the blob, and the UI can
+render and call it. Hand-written UI is only for composition and the
+governance components (receipt, refusal, approval request, redaction notice).
+No MCP anywhere in the UI path.</p>
 <h2 id="steps-for-a-new-method-eg-approvalsrequest_approval"><a class="header" href="#steps-for-a-new-method-eg-approvalsrequest_approval">Steps for a new method (e.g. <code>approvals.request_approval</code>)</a></h2>
 <ol>
 <li><strong>Logic, in this repo.</strong> Types, rules and tests in a crate here (e.g.
@@ -271,6 +290,8 @@ the bridge admits it by kernel identity, checks the exact capability, commits
 and returns a receipt. No MCP, no direct API calls, no <code>ovs-*</code> commands.
 Every new method built here follows: <strong>logic in this repo → plugin
 registration → sealed blob → operation file in the mount → call → receipt.</strong>
+The UI is derived from the same blobs: screens from sealed schemas, actions
+call the same sealed methods and show their receipts.
 See <a href="docs/DEV-CYCLE.html"><code>docs/DEV-CYCLE.md</code></a>.</p>
 </blockquote>
 <h2 id="why"><a class="header" href="#why">Why</a></h2>
