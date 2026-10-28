@@ -16,6 +16,7 @@ pub mod acceptance;
 pub mod catalogs;
 pub mod decide;
 pub mod model;
+pub mod org_bridge;
 
 pub use decide::decide;
 pub use model::{ActionKind, Decision, Grants, Profile, Request, Surface, Verdict};
