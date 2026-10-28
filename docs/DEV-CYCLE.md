@@ -26,7 +26,7 @@ method built for the hackathon follows this path — that is the dev cycle.
 |---|---|---|
 | **blob ↔ method** | A method exists only as a sealed blob; its schema is the single source of its arguments, results and required capability | `ls /dev/shm/opdbus/plugin-blobs/` (72 blobs today); `opblob inspect <file.blob>` |
 | **blob ↔ mount** | 3tchedFS projects each sealed method as `operations/<plugin>/<method>/{call,metadata.json,input.schema.json,output.schema.json}`; a new blob appears in every identity's mount, with no mount change | `/home/3tched/Hackathon/3tchedfs/operations/` (as `3tched`) |
-| **mount ↔ chatbot** | The identity acts only through its mount: call files, or `3tched-fs mcp --mount <mount>` which serves the sealed methods as MCP tools dispatched as that identity; `3tched-fs toolsets --publish` announces them on EMQX | call-file helper `3tched-callfile`; `3tched-fs mcp --help` |
+| **mount ↔ chatbot** | The identity acts **only** through its mount, by writing to call files. There is no MCP path: MCP was removed and replaced by 3tchedFS. `3tched-fs toolsets --publish` only announces the sealed method list on EMQX; it does not call anything | call-file helper `3tched-callfile` |
 
 ## Steps for a new method (e.g. `approvals.request_approval`)
 
@@ -47,8 +47,8 @@ method built for the hackathon follows this path — that is the dev cycle.
 5. **Grant.** The identity gets the method's exact capability (an owner-approved
    grant change). Without it, the call is refused with the capability named —
    which is itself demonstrable.
-6. **Call and verify.** As the identity: write arguments to the call file (or
-   use the MCP tool), read the result, keep the `operation_id` and
+6. **Call and verify.** As the identity: write arguments to the call file,
+   read the result from the same handle, keep the `operation_id` and
    `event_hash` as evidence.
 
 ## Mounts today (2026-10-28)
@@ -61,4 +61,6 @@ method built for the hackathon follows this path — that is the dev cycle.
 
 Known limits: live state reads (`plugins/*/value.json`) return EIO — use
 operations; the `3tched-fs call --mount` CLI cannot drive guest-kernel mounts —
-use call files or `3tched-fs mcp`.
+use the call files directly. Do not use the leftover `3tched-fs mcp`
+subcommand or the bridge's `/mcp` endpoint: MCP is retired in favour of the
+mount.

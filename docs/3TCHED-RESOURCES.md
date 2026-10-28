@@ -73,7 +73,7 @@ corpora). Voyage-4 embeddings, 1024 dimensions, one fused space.
 
 - Router: zeroclaw on `127.0.0.1:8084` (`zeroclaw.v1`), agent `dashboard`
   used by chat. Currently Salad `qwen3.5-35b-a3b`. The product calls Meta's Model API directly, not through this router (see `docs/RUNTIME.md`).
-- MCP: compact OP-DBUS tools at `https://<door-ip>:8090/mcp?opdbus_mode=compact`.
+- No MCP: it was removed and replaced by the 3tchedFS mount. Do not build on the bridge's `/mcp` endpoint or `3tched-fs mcp`.
 - UI: `http://<door-ip>:8080` (door `<door-ip>:8090`).
 
 ## Tools on the host

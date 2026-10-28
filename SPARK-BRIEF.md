@@ -101,8 +101,8 @@ it only if it fits the flow.
 
 - ~~Meta model not wired~~ — resolved 2026-10-28: Meta's Model API (`https://api.meta.ai/v1`, `muse-spark-1.3`) is wired for development (`~/.bash_secrets`) and the running service (`/home/3tched/.config/etched/env`); see `docs/RUNTIME.md`. 3tched's own chat router still uses a Qwen model.
 - Router turn costs ~15k tokens (skills bundle removed to halve it). Qwen does
-  not reliably emit text tool calls; MCP compact tools are connected
-  (`https://<door-ip>:8090/mcp`) but retrieval answers came back empty.
+  not reliably emit text tool calls. (MCP is retired — replaced by the 3tchedFS
+  mount — so do not rely on the router's MCP tools.)
 - Live state reads through the mount (`plugins/*/value.json`) return EIO.
 - Next release will fail activation: `notebook-sources-sync` cannot pass its
   30 s check after restart. Fix before releasing.
