@@ -119,3 +119,13 @@ control → a CMS behaviour → evidence (receipt or anchor):
 
 Pitch wording: "implements and evidences these controls" — never "compliant"
 or "certified" (an assessor declares compliance).
+
+## Remote identities: established design (owner, 2026-10-28)
+
+WireGuard is only the establishment step: the peer key proves the identity
+once, the decoy issues the signed peer proof (OIA1) and the session gets its
+sealed credential (SID1). After that it is zero trust — every call carries the
+credential and the door's interceptor re-verifies it, over any transport
+(internet, Cloudflare). 3tched-fs `Credential` mode is the remote form of the
+lungs. The mechanism exists; it needs testing and refinement, not a rebuild.
+Do not add a mesh (Netmaker/Cloudflare) as an identity layer.
