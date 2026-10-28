@@ -86,6 +86,8 @@ published interfaces (see [docs/3TCHED-RESOURCES.md](docs/3TCHED-RESOURCES.md)).
 - Its only network is the internet: the Meta model API and the blockchain.
 - Subsidiaries map to Linux users; the root is the 3tched control plane.
   See [docs/SUBSIDIARY-SLED.md](docs/SUBSIDIARY-SLED.md).
+- How this compares to SPIFFE, BeyondCorp and DIDs, and what it adds:
+  [docs/PRIOR-ART.md](docs/PRIOR-ART.md).
 
 ## Repository layout
 
@@ -98,7 +100,7 @@ published interfaces (see [docs/3TCHED-RESOURCES.md](docs/3TCHED-RESOURCES.md)).
 | `cms/` | the CMS and its control behaviours |
 | `web3/` | index log, Merkle anchoring |
 | `ui/` | Svelte components for the 3tched.com app |
-| `docs/` | 3tched resources, subsidiary/sled model |
+| `docs/` | 3tched resources, subsidiary/sled model, prior art and positioning |
 | `SPARK-BRIEF.md` | current state, rules, open issues, progress log |
 
 ## Working rules
