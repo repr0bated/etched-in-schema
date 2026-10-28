@@ -21,6 +21,8 @@ product) by Jeremy Hobson, founder of 3tched.
 > and returns a receipt. No MCP, no direct API calls, no `ovs-*` commands.
 > Every new method built here follows: **logic in this repo → plugin
 > registration → sealed blob → operation file in the mount → call → receipt.**
+> The UI is derived from the same blobs: screens from sealed schemas, actions
+> call the same sealed methods and show their receipts.
 > See [`docs/DEV-CYCLE.md`](docs/DEV-CYCLE.md).
 
 ## Why

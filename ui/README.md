@@ -1,5 +1,11 @@
 # ui
 
+> **The UI is in the 3tchedFS dev cycle.** Screens come from sealed plugin
+> schemas, components from the catalog sealed in the `json_render` blob, and
+> every action calls a sealed method (human: the door with their own
+> credential; identity: its mount's call file) and shows the receipt. A new
+> method's blob gives it UI without new code. See `../docs/DEV-CYCLE.md`.
+
 The web UI is built **from scratch** for the hackathon (no code shared with the
 3tched.com app). Only these references are kept, in `reference/`:
 

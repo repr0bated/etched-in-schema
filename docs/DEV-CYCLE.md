@@ -28,6 +28,22 @@ method built for the hackathon follows this path — that is the dev cycle.
 | **blob ↔ mount** | 3tchedFS projects each sealed method as `operations/<plugin>/<method>/{call,metadata.json,input.schema.json,output.schema.json}`; a new blob appears in every identity's mount, with no mount change | `/home/3tched/Hackathon/3tchedfs/operations/` (as `3tched`) |
 | **mount ↔ chatbot** | The identity acts **only** through its mount, by writing to call files. There is no MCP path: MCP was removed and replaced by 3tchedFS. `3tched-fs toolsets --publish` only announces the sealed method list on EMQX; it does not call anything | call-file helper `3tched-callfile` |
 
+## The UI is in the same cycle
+
+The UI is **derived from the blobs**, never written against a separate API:
+
+| Step | What happens |
+|---|---|
+| Screens | Rendered from a plugin's **sealed schema** (`schema_renderer.render_schema`) — a new method's blob gives it a form and result view automatically |
+| Components | Only components declared in the catalog sealed in the `json_render` blob; a generated spec is **validated against that catalog** before it is shown |
+| Actions | Call the **same sealed method** for whoever is acting: a human through the door (the one generic `PluginService/CallMethod`, with their own credential); the identity through its mount's call file. Same blob, same capability check, same receipt |
+| Results | Every action shows its **receipt** (operation id, outcome, capability) — and a refusal shows the missing capability |
+
+So a new method needs no UI code to appear: seal the blob, and the UI can
+render and call it. Hand-written UI is only for composition and the
+governance components (receipt, refusal, approval request, redaction notice).
+No MCP anywhere in the UI path.
+
 ## Steps for a new method (e.g. `approvals.request_approval`)
 
 1. **Logic, in this repo.** Types, rules and tests in a crate here (e.g.
