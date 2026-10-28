@@ -102,3 +102,20 @@ it only if it fits the flow.
 - Re-key of the core chatbot to the WireGuard server key (session
   `58287215-0136-f7c3-0a02-d51a593b75ef`) has no supported op yet.
 - UI overlay on `dashboard-release` is runtime-only; lost on reboot or release.
+
+## CMS: compliant by construction (owner direction, 2026-10-28)
+
+The CMS is the showcase because it comes out usable *and* evidently
+controlled. Pick a handful of controls whose effect is visible on stage; each
+control → a CMS behaviour → evidence (receipt or anchor):
+
+| Control area | Visible behaviour | Evidence |
+|---|---|---|
+| PII handling (NIST 800-53 PT) | automatic redaction on publish; original kept only in the owner's private scope | redaction operation receipt naming the triggering policy |
+| Audit (AU) | every create/edit/publish attributable | receipt chain: who, capability, when |
+| Access control (AC) | roles compiled into capability grants | a live denial showing the exact missing capability |
+| Retention (SI-12) | scheduled expiry/archive | scheduled operation receipt |
+| Integrity | published versions hash-anchored | on-chain anchor a judge can check |
+
+Pitch wording: "implements and evidences these controls" — never "compliant"
+or "certified" (an assessor declares compliance).
