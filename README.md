@@ -117,7 +117,7 @@ the router, and the 3tched.com UI.
 | `cms/` | the CMS and its control behaviours (background) |
 | `web3/` | index log, Merkle anchoring |
 | `ui/` | Svelte components for the 3tched.com app |
-| `START-HERE.md`, `CONTEXT.md` | open in Junie; CONTEXT.md bundles every doc (rebuild with `tools/build-context.sh`) |
+| `START-HERE.md`, `CONTEXT.md` | open in omp; CONTEXT.md bundles every doc (rebuild with `tools/build-context.sh`) |
 | `docs/` | 3tched resources, subsidiary/sled model, prior art and positioning, how to win |
 | `SPARK-BRIEF.md` | current state, rules, open issues, progress log |
 

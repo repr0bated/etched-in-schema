@@ -1,4 +1,4 @@
-# START HERE — Etched in Schema (open this in Junie)
+# START HERE — Etched in Schema (open this in omp)
 
 You are building **Etched in Schema** for the Meta Model API hackathon,
 **Startup Track — judged on a working product**. Builder: Jeremy Hobson
@@ -16,10 +16,11 @@ originals are:
 4. `SPARK-BRIEF.md` — state, rules, open issues, progress log
 5. `docs/3TCHED-RESOURCES.md` — the platform you call, and how (call-file protocol)
 6. `docs/SUBSIDIARY-SLED.md` — identity, root, subsidiaries, approvals
-7. `docs/PRIOR-ART.md` — positioning (SPIFFE, BeyondCorp, DIDs)
-8. `docs/WINNING.md` — priorities for the demo
-9. `review/out/findings.md` — Jev's scored review of the strategy
-10. `schema/*.json` — draft schemas
+7. `docs/APPROVALS-SPEC.md` — two-approval root, policy co-signer, break-glass
+8. `docs/PRIOR-ART.md` — positioning (SPIFFE, BeyondCorp, DIDs)
+9. `docs/WINNING.md` — priorities for the demo
+10. `review/out/findings.md` — Jev's scored review of the strategy
+11. `schema/*.json` — draft schemas
 
 ## Scope — what is judged (new work only)
 

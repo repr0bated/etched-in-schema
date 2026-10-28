@@ -7,7 +7,7 @@ State as of 2026-10-28; **proven** = demonstrated, **planned** = to build.
 
 | Role | Linux user | Where | Has |
 |---|---|---|---|
-| **Develop** (Junie, builds, OSCAL authoring) | `jeremy` | `/srv/git/etched-in-schema` | cargo, trestle, node/npm, python3 |
+| **Develop** (omp, builds, OSCAL authoring) | `jeremy` | `/srv/git/etched-in-schema` | cargo, trestle, node/npm, python3 |
 | **Run** (the governed service: router, policy, enforcement, chat adapter) | `3tched` (uid 1001) — the Hackathon subsidiary | `/home/3tched/Hackathon` | node/npm, python3; the identity mount |
 
 Only `3tched` can act through the subsidiary's mount; `jeremy` gets

@@ -1,4 +1,8 @@
-# AGENTS.md — etched-in-schema
+# AGENTS.md — etched-in-schema (read by omp)
+
+Start with `START-HERE.md`, then read `CONTEXT.md` in full (it bundles every doc).
+Runtime and rules: `docs/RUNTIME.md`; specs: `docs/DROP-IN-SPEC.md`, `docs/APPROVALS-SPEC.md`.
+
 
 Read `SPARK-BRIEF.md` first: it is the current project state, paths, rules and plan.
 Then `README.md`, `docs/3TCHED-RESOURCES.md`, `docs/SUBSIDIARY-SLED.md`, `docs/PRIOR-ART.md`, `docs/WINNING.md` and `docs/DROP-IN-SPEC.md` (the drop-in to build).
