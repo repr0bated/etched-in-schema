@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-3b0e3cf7.js";
+            window.path_to_searchindex_js = "searchindex-441ab2f1.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-032c8853.js"></script>
@@ -556,6 +556,9 @@ returns <code>omp-meta-ok</code> (~7s). Broker cred hash == <code>META_API_KEY</
 </li>
 <li>
 <p>2026-10-28: <code>approvals/</code> crate implements APPROVALS-SPEC §§4-7 as pure Rust (request types, canonical sha256 args hash, truth table with fixed 0.7/0.3 thresholds, single-use TicketStore; <code>cargo test</code> 12/12 incl. acceptance criteria 3 and 5). No I/O or network yet. Next: policy engine skeleton + <code>route(Request, Profile)</code>.</p>
+</li>
+<li>
+<p>2026-10-28: Docs auto-publish live: <code>book/</code> (mdBook guide, single-source symlinks) + rustdoc API combined by <code>tools/build-docs.sh</code> into <code>site/</code> (gitignored), deployed by <code>.github/workflows/docs.yml</code> to https://repr0bated.github.io/etched-in-schema/ (verified 200 on guide + API). Local: <code>mdbook</code> 0.5.4 via cargo.</p>
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
