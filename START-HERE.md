@@ -55,7 +55,12 @@ the reason → the thread shows result, receipts and any redaction.
   plugins from an adapter; adapters hold no grants.
 - Mark every claim **proven** (with evidence) or **planned**.
 - Do not name vendors in product copy (say "team chat", not a brand).
-- Commit small and often; log progress, dated, at the end of `SPARK-BRIEF.md`.
+- Commit small and often, and **push often** — the public history is the
+  evidence the work was done during the hackathon. Never rewrite history or
+  force-push. A pre-commit check (`tools/check-public.sh`, enabled with
+  `git config core.hooksPath .githooks`) refuses real addresses, identity IDs
+  and anything key-shaped; fix the content with placeholders, never bypass it
+  with `--no-verify`. Log progress, dated, at the end of `SPARK-BRIEF.md`.
 
 ## First task
 

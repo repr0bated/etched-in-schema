@@ -1,6 +1,7 @@
 # AGENTS.md — etched-in-schema (read by omp)
 
 Start with `START-HERE.md`, then read `CONTEXT.md` in full (it bundles every doc).
+This repository is PUBLIC: placeholders only, push often, never rewrite history, never use `--no-verify`. Enable the guard once per clone: `git config core.hooksPath .githooks`.
 Runtime and rules: `docs/RUNTIME.md`; specs: `docs/DROP-IN-SPEC.md`, `docs/APPROVALS-SPEC.md`.
 
 
