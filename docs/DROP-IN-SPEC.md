@@ -23,6 +23,12 @@ Marked **existing** (3tched today, used through its interfaces) or **new**
 Rules that carry over unchanged: every visible element is declared in the
 catalog; specs are validated before they are shown; the plugin is the schema.
 
+**The generator is proven** (owner, 2026-10-28): it did this job well before
+any compliance layer existed. Reuse it as is. Do not rebuild generation,
+validation or the catalog; the new work is only the Slack renderer target, the
+five governance components (2.3), and routing every action through
+compliance, policy and enforcement (2.2).
+
 ## 2. What the drop-in adds (new)
 
 ### 2.1 Renderer targets
