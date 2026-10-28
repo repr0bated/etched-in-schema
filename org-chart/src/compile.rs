@@ -10,6 +10,11 @@ use std::collections::{BTreeMap, BTreeSet};
 /// Maximum reporting depth. Deeper charts refuse as malformed.
 pub const MAX_DEPTH: usize = 32;
 
+/// Maximum positions at any one reporting level. Bounds generated-object
+/// fan-out per level (departments, managers, whatever the chart holds):
+/// injected bulk positions refuse the whole chart. Tunable per deployment.
+pub const MAX_POSITIONS_PER_LEVEL: usize = 256;
+
 /// One derived grant, with provenance for the "why do I hold this" view.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Grant {
@@ -29,11 +34,15 @@ pub struct Skip {
     pub reason: String,
 }
 
-/// Compiler output: grants plus skips. Empty chart compiles to empty.
+/// Compiler output: grants plus skips, pinned to the sealed catalog hash
+/// the compile verified against. Empty chart compiles to empty.
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct CompileOutput {
     pub grants: Vec<Grant>,
     pub skips: Vec<Skip>,
+    /// Hex of the sealed catalog (`opblob` catalog hash) at compile time,
+    /// or `None` for an unpinned compile. `verify_seal` enforces the pin.
+    pub sealed_catalog_hash: Option<String>,
 }
 
 /// Whole-chart refusal: the chart itself is malformed.
@@ -42,7 +51,29 @@ pub enum ChartError {
     UnknownRole { position: String, role: String },
     Cycle { position: String },
     TooDeep { position: String },
+    TooManyAtLevel { level: usize, count: usize },
     DuplicatePosition { position: String },
+}
+
+/// Seal verification failure: recompile against the live catalog.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum SealError {
+    Unpinned,
+    Mismatch { expected: String, live: String },
+}
+
+/// Refuse unless the output's pinned hash equals the live sealed catalog
+/// hash. Detects catalog substitution or drift between compile and use.
+/// Unpinned outputs always refuse: pin or recompile.
+pub fn verify_seal(output: &CompileOutput, live_hash: &str) -> Result<(), SealError> {
+    match &output.sealed_catalog_hash {
+        None => Err(SealError::Unpinned),
+        Some(expected) if expected == live_hash => Ok(()),
+        Some(expected) => Err(SealError::Mismatch {
+            expected: expected.clone(),
+            live: live_hash.to_string(),
+        }),
+    }
 }
 
 fn check_structure(chart: &OrgChart) -> Result<(), ChartError> {
@@ -55,6 +86,7 @@ fn check_structure(chart: &OrgChart) -> Result<(), ChartError> {
         }
     }
     let ids: BTreeSet<&str> = chart.positions.iter().map(|p| p.id.as_str()).collect();
+    let mut levels: BTreeMap<usize, usize> = BTreeMap::new();
     for p in &chart.positions {
         for role in &p.roles {
             if chart.role(role).is_none() {
@@ -65,7 +97,7 @@ fn check_structure(chart: &OrgChart) -> Result<(), ChartError> {
             }
         }
         // Walk the reporting chain: missing parents are roots; cycles and
-        // over-depth chains refuse.
+        // over-depth chains refuse. Chain length is the position's level.
         let mut chain = BTreeSet::new();
         chain.insert(p.id.as_str());
         let mut current = p.reports_to.as_deref();
@@ -91,17 +123,39 @@ fn check_structure(chart: &OrgChart) -> Result<(), ChartError> {
                 break;
             }
         }
+        *levels.entry(depth).or_insert(0) += 1;
+    }
+    for (level, count) in &levels {
+        if *count > MAX_POSITIONS_PER_LEVEL {
+            return Err(ChartError::TooManyAtLevel {
+                level: *level,
+                count: *count,
+            });
+        }
     }
     Ok(())
 }
+ 
+ /// Compile `(chart, ())` to effective grants. The profile argument is
+ /// reserved: role capabilities already name sealed caps, so no profile
+ /// filtering happens here — controls govern use at `decide()` time.
+/// Unpinned: `sealed_catalog_hash` is `None`; `verify_seal` refuses it.
+/// Prefer [`compile_pinned`] with the live sealed catalog hash.
+ pub fn compile(chart: &OrgChart) -> Result<CompileOutput, ChartError> {
+    compile_pinned(chart, None)
+}
 
-/// Compile `(chart, ())` to effective grants. The profile argument is
-/// reserved: role capabilities already name sealed caps, so no profile
-/// filtering happens here — controls govern use at `decide()` time.
-pub fn compile(chart: &OrgChart) -> Result<CompileOutput, ChartError> {
+/// Compile pinned to a sealed catalog hash (`opblob` catalog hash hex).
+/// `verify_seal` later refuses use under any other catalog.
+pub fn compile_pinned(
+    chart: &OrgChart,
+    sealed_catalog_hash: Option<&str>,
+) -> Result<CompileOutput, ChartError> {
     check_structure(chart)?;
-    let mut out = CompileOutput::default();
-    let mut granted: BTreeMap<(String, String), (String, String)> = BTreeMap::new();
+    let mut out = CompileOutput {
+        sealed_catalog_hash: sealed_catalog_hash.map(str::to_string),
+        ..Default::default()
+    };
     for position in &chart.positions {
         for role_id in &position.roles {
             let role = chart.role(role_id).expect("checked above");
@@ -167,6 +221,53 @@ mod tests {
             capabilities: caps.iter().map(|s| s.to_string()).collect(),
             requires_attributes: attrs.iter().map(|s| s.to_string()).collect(),
         }
+    }
+
+    #[test]
+    fn level_bound_refuses_bulk_injection() {
+        let mut positions = Vec::new();
+        for i in 0..=super::MAX_POSITIONS_PER_LEVEL {
+            positions.push(Position {
+                id: format!("bulk-{i}"),
+                reports_to: None,
+                roles: vec![],
+                members: vec![],
+            });
+        }
+        let chart = OrgChart {
+            id: "bulk".into(),
+            positions,
+            roles: vec![],
+        };
+        assert_eq!(
+            compile(&chart),
+            Err(ChartError::TooManyAtLevel {
+                level: 1,
+                count: super::MAX_POSITIONS_PER_LEVEL + 1,
+            })
+        );
+    }
+
+    #[test]
+    fn pin_carries_hash_and_verify_enforces_it() {
+        use super::{compile_pinned, verify_seal, SealError};
+        let chart = OrgChart {
+            id: "pin".into(),
+            positions: vec![],
+            roles: vec![],
+        };
+        let pinned = compile_pinned(&chart, Some("abc123")).unwrap();
+        assert_eq!(pinned.sealed_catalog_hash.as_deref(), Some("abc123"));
+        assert!(verify_seal(&pinned, "abc123").is_ok());
+        assert_eq!(
+            verify_seal(&pinned, "deadbeef"),
+            Err(SealError::Mismatch {
+                expected: "abc123".into(),
+                live: "deadbeef".into(),
+            })
+        );
+        let unpinned = compile(&chart).unwrap();
+        assert_eq!(verify_seal(&unpinned, "abc123"), Err(SealError::Unpinned));
     }
 
     #[test]

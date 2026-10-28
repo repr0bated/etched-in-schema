@@ -8,6 +8,17 @@
 use crate::model::Grants;
 use org_chart::CompileOutput;
 
+/// Grants for a member only if the output verifies against the live sealed
+/// catalog hash. Order: compile_pinned → verify → decide. Unpinned or
+/// drifted outputs refuse before any decision is computed.
+pub fn grants_for_verified(
+    output: &org_chart::CompileOutput,
+    member_key: &str,
+    live_hash: &str,
+) -> Result<Grants, org_chart::SealError> {
+    org_chart::verify_seal(output, live_hash)?;
+    Ok(grants_for(output, member_key))
+}
 /// Effective grant strings for one member key, in deterministic order.
 pub fn grants_for(output: &CompileOutput, member_key: &str) -> Grants {
     let mut capabilities: Vec<String> = output
@@ -103,5 +114,15 @@ mod tests {
         assert!(output.grants.is_empty());
         let grants = grants_for(&output, "wk-plain");
         assert!(grants.capabilities.is_empty());
+    }
+    #[test]
+    fn verified_gate_enforces_live_hash() {
+        use crate::org_bridge::grants_for_verified;
+        let chart = audit_chart();
+        let pinned = org_chart::compile_pinned(&chart, Some("live1")).unwrap();
+        assert!(grants_for_verified(&pinned, "wk-desk", "live1").is_ok());
+        assert!(grants_for_verified(&pinned, "wk-desk", "other").is_err());
+        let unpinned = org_chart::compile(&chart).unwrap();
+        assert!(grants_for_verified(&unpinned, "wk-desk", "live1").is_err());
     }
 }

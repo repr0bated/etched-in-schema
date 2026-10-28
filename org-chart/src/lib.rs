@@ -9,5 +9,8 @@ pub mod acceptance;
 pub mod compile;
 pub mod model;
 
-pub use compile::{compile, CompileOutput, Grant, Skip};
+pub use compile::{
+    compile, compile_pinned, verify_seal, CompileOutput, Grant, Skip,
+    ChartError, SealError, MAX_DEPTH, MAX_POSITIONS_PER_LEVEL,
+};
 pub use model::{Member, OrgChart, Position, Role};
