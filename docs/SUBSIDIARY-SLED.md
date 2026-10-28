@@ -14,6 +14,14 @@ How an identity works as the embodiment of a subsidiary. Marked **existing**
   as root needs **two approvals** (two-person rule). Today `elevation` offers a
   single-use ticket (`authorize_task`, 60 s TTL); the second approval is new
   work. **Planned.**
+- **Owner override** (owner requirement): while the owner is the only human,
+  his identity must be able to override the two-approval rule. Proposed:
+  routine root actions take two approvals from two independent owner devices
+  (session + hardware key/phone); an override is break-glass — fresh
+  hardware-key confirmation, a cancellable delay, a receipt anchored on-chain,
+  and a notification on a second channel — so even the owner cannot act as
+  root silently. A designated human second approver replaces this later.
+  **Planned.**
 - **Subsidiaries**: Linux users on the system. Each subsidiary is bounded by
   its home directory. **Planned.**
 - **Hackathon subsidiary**: embodied by identity `b0c777e3…` (today's
