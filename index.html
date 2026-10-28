@@ -35,10 +35,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-fdd7cb23.js";
+            window.path_to_searchindex_js = "searchindex-b5aedcdb.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-2370a1c3.js"></script>
+        <script src="toc-dd34a01b.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -235,6 +235,15 @@ result, the receipts, and any redaction applied.</p>
 <p>Out of the critical path: the avatar/embodiment, moving identities between
 hosts, client acquisition, and on-chain anchoring (kept only if it fits once
 the golden path works).</p>
+<h2 id="how-it-works-the-method-is-the-blob"><a class="header" href="#how-it-works-the-method-is-the-blob">How it works: the method is the blob</a></h2>
+<p>Every capability the identity has is a <strong>sealed blob</strong>: the plugin’s schema,
+sealed into the platform’s catalog. The identity’s own <strong>3tchedFS mount</strong>
+projects each sealed method as a typed file; the identity (the chatbot) acts
+<strong>only</strong> by calling those files, and every call is admitted, checked against
+the exact capability, committed and <strong>receipted</strong>. New methods built here reach
+the identity the same way: logic in this repo → plugin registration → sealed
+blob → operation file in the mount → call → receipt. See
+<a href="docs/DEV-CYCLE.html">docs/DEV-CYCLE.md</a>.</p>
 <h2 id="what-is-new-vs-what-already-exists"><a class="header" href="#what-is-new-vs-what-already-exists">What is new vs. what already exists</a></h2>
 <p>Everything in <strong>this repository</strong> is developed during the hackathon. It is
 built <em>on</em> 3tched, which already exists and is used only through its
