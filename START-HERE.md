@@ -12,13 +12,14 @@ originals are:
 
 1. `README.md` — goals, golden path, new vs. existing
 2. `docs/DROP-IN-SPEC.md` — the drop-in to build (generator + team chat + generated backends)
-3. `SPARK-BRIEF.md` — state, rules, open issues, progress log
-4. `docs/3TCHED-RESOURCES.md` — the platform you call, and how (call-file protocol)
-5. `docs/SUBSIDIARY-SLED.md` — identity, root, subsidiaries, approvals
-6. `docs/PRIOR-ART.md` — positioning (SPIFFE, BeyondCorp, DIDs)
-7. `docs/WINNING.md` — priorities for the demo
-8. `review/out/findings.md` — Jev's scored review of the strategy
-9. `schema/*.json` — draft schemas
+3. `docs/RUNTIME.md` — where things run (develop as `jeremy`, run as `3tched`), calling the platform, supervision, network, models, secrets
+4. `SPARK-BRIEF.md` — state, rules, open issues, progress log
+5. `docs/3TCHED-RESOURCES.md` — the platform you call, and how (call-file protocol)
+6. `docs/SUBSIDIARY-SLED.md` — identity, root, subsidiaries, approvals
+7. `docs/PRIOR-ART.md` — positioning (SPIFFE, BeyondCorp, DIDs)
+8. `docs/WINNING.md` — priorities for the demo
+9. `review/out/findings.md` — Jev's scored review of the strategy
+10. `schema/*.json` — draft schemas
 
 ## Scope — what is judged (new work only)
 
