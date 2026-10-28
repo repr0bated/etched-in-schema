@@ -5,3 +5,4 @@ dist/
 *.key
 local/
 CONTEXT.md
+site/
