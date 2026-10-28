@@ -35,10 +35,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-b80fc186.js";
+            window.path_to_searchindex_js = "searchindex-80b4d409.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-dd34a01b.js"></script>
+        <script src="toc-e5db6bcb.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -191,6 +191,17 @@ under what authority, and what actually happened</em> without trusting the agent
 or its operator.</p>
 <p>Built for the Meta Model API hackathon (Startup Track — judged on a working
 product) by Jeremy Hobson, founder of 3tched.</p>
+<blockquote>
+<p><strong>The method is the blob — the identity acts only through 3tchedFS.</strong>
+Every method is a plugin schema sealed into a blob. The identity’s own
+3tchedFS mount projects each sealed method as a typed file
+(<code>operations/&lt;plugin&gt;/&lt;method&gt;/call</code>); the identity writes arguments there,
+the bridge admits it by kernel identity, checks the exact capability, commits
+and returns a receipt. No MCP, no direct API calls, no <code>ovs-*</code> commands.
+Every new method built here follows: <strong>logic in this repo → plugin
+registration → sealed blob → operation file in the mount → call → receipt.</strong>
+See <a href="docs/DEV-CYCLE.html"><code>docs/DEV-CYCLE.md</code></a>.</p>
+</blockquote>
 <h2 id="why"><a class="header" href="#why">Why</a></h2>
 <p>AI agents can reason about goals, but they rarely have a durable identity,
 verifiable permissions, accountable execution, or the ability to build and
@@ -235,15 +246,6 @@ result, the receipts, and any redaction applied.</p>
 <p>Out of the critical path: the avatar/embodiment, moving identities between
 hosts, client acquisition, and on-chain anchoring (kept only if it fits once
 the golden path works).</p>
-<h2 id="how-it-works-the-method-is-the-blob"><a class="header" href="#how-it-works-the-method-is-the-blob">How it works: the method is the blob</a></h2>
-<p>Every capability the identity has is a <strong>sealed blob</strong>: the plugin’s schema,
-sealed into the platform’s catalog. The identity’s own <strong>3tchedFS mount</strong>
-projects each sealed method as a typed file; the identity (the chatbot) acts
-<strong>only</strong> by calling those files, and every call is admitted, checked against
-the exact capability, committed and <strong>receipted</strong>. New methods built here reach
-the identity the same way: logic in this repo → plugin registration → sealed
-blob → operation file in the mount → call → receipt. See
-<a href="docs/DEV-CYCLE.html">docs/DEV-CYCLE.md</a>.</p>
 <h2 id="what-is-new-vs-what-already-exists"><a class="header" href="#what-is-new-vs-what-already-exists">What is new vs. what already exists</a></h2>
 <p>Everything in <strong>this repository</strong> is developed during the hackathon. It is
 built <em>on</em> 3tched, which already exists and is used only through its
@@ -321,6 +323,9 @@ See <a href="docs/SUBSIDIARY-SLED.html">docs/SUBSIDIARY-SLED.md</a>.</li>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="dev-cycle.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
 
                             <a rel="next prefetch" href="start-here.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
@@ -332,6 +337,9 @@ See <a href="docs/SUBSIDIARY-SLED.html">docs/SUBSIDIARY-SLED.md</a>.</li>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="dev-cycle.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
 
                     <a rel="next prefetch" href="start-here.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>

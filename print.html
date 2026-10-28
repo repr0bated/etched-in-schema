@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-b80fc186.js";
+            window.path_to_searchindex_js = "searchindex-80b4d409.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-dd34a01b.js"></script>
+        <script src="toc-e5db6bcb.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -178,7 +178,80 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="etched-in-schema"><a class="header" href="#etched-in-schema">Etched in Schema</a></h1>
+                        <h1 id="dev-cycle-blob--mount--identity"><a class="header" href="#dev-cycle-blob--mount--identity">Dev cycle: blob → mount → identity</a></h1>
+<p><strong>The method is the blob.</strong> In 3tched a plugin <em>is</em> its schema, sealed into a
+blob; a method exists if and only if its blob is in the sealed catalog. The
+identity (the chatbot / the subsidiary) never calls code directly: it sees the
+sealed methods as typed files in its own 3tchedFS mount, calls them there, and
+every call is admitted, checked and receipted by the platform. Every new
+method built for the hackathon follows this path — that is the dev cycle.</p>
+<pre><code class="language-text"> this repo (new logic)        platform registration        sealed catalog
+ ┌───────────────────┐       ┌────────────────────┐       ┌──────────────────────────┐
+ │ crate: types,     │──────▶│ plugin schema +    │──────▶│ &lt;plugin&gt;.&lt;hash16&gt;.blob   │
+ │ rules, tests      │       │ dispatch (op-dbus) │ seal  │ (/dev/shm/opdbus/...)    │
+ └───────────────────┘       └────────────────────┘       └────────────┬─────────────┘
+                                                                        │ projected by 3tchedFS
+                                                                        ▼
+ receipt ◀── bridge: kernel/credential identity, ◀── call file ◀── identity's mount
+ (operation id,      exact capability, commit          (write args,   operations/&lt;plugin&gt;/&lt;method&gt;/call
+  chain event)                                          read result)
+</code></pre>
+<h2 id="the-three-relationships"><a class="header" href="#the-three-relationships">The three relationships</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Relationship</th><th>What it means</th><th>Where to see it</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>blob ↔ method</strong></td><td>A method exists only as a sealed blob; its schema is the single source of its arguments, results and required capability</td><td><code>ls /dev/shm/opdbus/plugin-blobs/</code> (72 blobs today); <code>opblob inspect &lt;file.blob&gt;</code></td></tr>
+<tr><td><strong>blob ↔ mount</strong></td><td>3tchedFS projects each sealed method as <code>operations/&lt;plugin&gt;/&lt;method&gt;/{call,metadata.json,input.schema.json,output.schema.json}</code>; a new blob appears in every identity’s mount, with no mount change</td><td><code>/home/3tched/Hackathon/3tchedfs/operations/</code> (as <code>3tched</code>)</td></tr>
+<tr><td><strong>mount ↔ chatbot</strong></td><td>The identity acts <strong>only</strong> through its mount, by writing to call files. There is no MCP path: MCP was removed and replaced by 3tchedFS. <code>3tched-fs toolsets --publish</code> only announces the sealed method list on EMQX; it does not call anything</td><td>call-file helper <code>3tched-callfile</code></td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="steps-for-a-new-method-eg-approvalsrequest_approval"><a class="header" href="#steps-for-a-new-method-eg-approvalsrequest_approval">Steps for a new method (e.g. <code>approvals.request_approval</code>)</a></h2>
+<ol>
+<li><strong>Logic, in this repo.</strong> Types, rules and tests in a crate here (e.g.
+<code>approvals/</code>). No I/O. This is the judged, new work.</li>
+<li><strong>Register as a plugin, on the platform.</strong> A thin schema + dispatch module in
+<code>/srv/git/odbus-verified/crates/op-plugins/src/state_plugins/&lt;name&gt;.rs</code>,
+registered in <code>default_registry.rs</code>, calling this repo’s crate. Follow that
+repo’s <code>AGENTS.md</code> (plugin is the schema; no parallel schema files). Keep it
+an adapter: decisions stay in this repo’s crate.</li>
+<li><strong>Seal a development catalog, without touching live.</strong> Build, then
+<code>opblob seal-plugins &lt;dev-catalog-dir&gt;</code> and inspect the new blob
+(<code>opblob inspect</code>). The live catalog is unchanged.</li>
+<li><strong>Release.</strong> The only deploy path is the platform release
+(<code>./activate-golden.sh</code> → slot activation). After it, the blob is in the live
+catalog and the operation file appears in the subsidiary’s mount
+automatically.</li>
+<li><strong>Grant.</strong> The identity gets the method’s exact capability (an owner-approved
+grant change). Without it, the call is refused with the capability named —
+which is itself demonstrable.</li>
+<li><strong>Call and verify.</strong> As the identity: write arguments to the call file,
+read the result from the same handle, keep the <code>operation_id</code> and
+<code>event_hash</code> as evidence.</li>
+</ol>
+<h2 id="mounts-today-2026-10-28"><a class="header" href="#mounts-today-2026-10-28">Mounts today (2026-10-28)</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Mount</th><th>Identity</th><th>Status</th></tr>
+</thead>
+<tbody>
+<tr><td><code>/home/3tched/Hackathon/3tchedfs</code> (host)</td><td>Hackathon subsidiary <code>&lt;subsidiary-session&gt;</code></td><td>mounted, runit <code>subsidiary-hackathon-3tchedfs</code></td></tr>
+<tr><td><code>/run/mount/3tchedfs</code>, <code>/run/mount/threetched</code> (inside the identity container)</td><td>same identity</td><td>mounted</td></tr>
+<tr><td><code>/run/mounts/3tchedFS</code>, <code>/run/mounts/threetched</code> (host)</td><td>owner <code>&lt;owner-session&gt;</code></td><td><strong>not mounted</strong> — fstab entries missing since the reboot; owner’s decision to restore</td></tr>
+</tbody>
+</table>
+</div>
+<p>Known limits: live state reads (<code>plugins/*/value.json</code>) return EIO — use
+operations; the <code>3tched-fs call --mount</code> CLI cannot drive guest-kernel mounts —
+use the call files directly. Do not use the leftover <code>3tched-fs mcp</code>
+subcommand or the bridge’s <code>/mcp</code> endpoint: MCP is retired in favour of the
+mount.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="etched-in-schema"><a class="header" href="#etched-in-schema">Etched in Schema</a></h1>
 <p><strong>An identity that acts — and can prove what it did.</strong></p>
 <p>Etched in Schema is a self-contained 3tched identity — the living embodiment
 of a business subsidiary — that turns a business goal into deployed,
@@ -189,6 +262,17 @@ under what authority, and what actually happened</em> without trusting the agent
 or its operator.</p>
 <p>Built for the Meta Model API hackathon (Startup Track — judged on a working
 product) by Jeremy Hobson, founder of 3tched.</p>
+<blockquote>
+<p><strong>The method is the blob — the identity acts only through 3tchedFS.</strong>
+Every method is a plugin schema sealed into a blob. The identity’s own
+3tchedFS mount projects each sealed method as a typed file
+(<code>operations/&lt;plugin&gt;/&lt;method&gt;/call</code>); the identity writes arguments there,
+the bridge admits it by kernel identity, checks the exact capability, commits
+and returns a receipt. No MCP, no direct API calls, no <code>ovs-*</code> commands.
+Every new method built here follows: <strong>logic in this repo → plugin
+registration → sealed blob → operation file in the mount → call → receipt.</strong>
+See <a href="docs/DEV-CYCLE.html"><code>docs/DEV-CYCLE.md</code></a>.</p>
+</blockquote>
 <h2 id="why"><a class="header" href="#why">Why</a></h2>
 <p>AI agents can reason about goals, but they rarely have a durable identity,
 verifiable permissions, accountable execution, or the ability to build and
@@ -233,15 +317,6 @@ result, the receipts, and any redaction applied.</p>
 <p>Out of the critical path: the avatar/embodiment, moving identities between
 hosts, client acquisition, and on-chain anchoring (kept only if it fits once
 the golden path works).</p>
-<h2 id="how-it-works-the-method-is-the-blob"><a class="header" href="#how-it-works-the-method-is-the-blob">How it works: the method is the blob</a></h2>
-<p>Every capability the identity has is a <strong>sealed blob</strong>: the plugin’s schema,
-sealed into the platform’s catalog. The identity’s own <strong>3tchedFS mount</strong>
-projects each sealed method as a typed file; the identity (the chatbot) acts
-<strong>only</strong> by calling those files, and every call is admitted, checked against
-the exact capability, committed and <strong>receipted</strong>. New methods built here reach
-the identity the same way: logic in this repo → plugin registration → sealed
-blob → operation file in the mount → call → receipt. See
-<a href="docs/DEV-CYCLE.html">docs/DEV-CYCLE.md</a>.</p>
 <h2 id="what-is-new-vs-what-already-exists"><a class="header" href="#what-is-new-vs-what-already-exists">What is new vs. what already exists</a></h2>
 <p>Everything in <strong>this repository</strong> is developed during the hackathon. It is
 built <em>on</em> 3tched, which already exists and is used only through its
@@ -319,6 +394,17 @@ See <a href="docs/SUBSIDIARY-SLED.html">docs/SUBSIDIARY-SLED.md</a>.</li>
 <p>You are building <strong>Etched in Schema</strong> for the Meta Model API hackathon,
 <strong>Startup Track — judged on a working product</strong>. Builder: Jeremy Hobson
 (3tched). Use Meta’s models (Muse Spark) for the product’s AI steps.</p>
+<blockquote>
+<p><strong>The method is the blob — the identity acts only through 3tchedFS.</strong>
+Every method is a plugin schema sealed into a blob. The identity’s own
+3tchedFS mount projects each sealed method as a typed file
+(<code>operations/&lt;plugin&gt;/&lt;method&gt;/call</code>); the identity writes arguments there,
+the bridge admits it by kernel identity, checks the exact capability, commits
+and returns a receipt. No MCP, no direct API calls, no <code>ovs-*</code> commands.
+Every new method built here follows: <strong>logic in this repo → plugin
+registration → sealed blob → operation file in the mount → call → receipt.</strong>
+See <a href="docs/DEV-CYCLE.html"><code>docs/DEV-CYCLE.md</code></a>.</p>
+</blockquote>
 <h2 id="load-everything"><a class="header" href="#load-everything">Load everything</a></h2>
 <p>Read <strong><code>CONTEXT.md</code></strong> in full before doing anything (it is generated and
 local-only: run <code>tools/build-context.sh</code> if it is missing). Real host
@@ -329,8 +415,8 @@ document in priority order (scope first). If you need a single source, the
 originals are:</p>
 <ol>
 <li><code>README.md</code> — goals, golden path, new vs. existing</li>
-<li><code>docs/DEV-CYCLE.md</code> — <strong>blob → mount → identity</strong>: how every new method is sealed, projected and called
-2b. <code>docs/DROP-IN-SPEC.md</code> — the drop-in to build (generator + team chat + generated backends)</li>
+<li><code>docs/DEV-CYCLE.md</code> — <strong>read first after the README: blob → mount → identity</strong></li>
+<li><code>docs/DROP-IN-SPEC.md</code> — the drop-in to build (generator + team chat + generated backends)</li>
 <li><code>docs/RUNTIME.md</code> — where things run (develop as <code>jeremy</code>, run as <code>3tched</code>), calling the platform, supervision, network, models, secrets</li>
 <li><code>SPARK-BRIEF.md</code> — state, rules, open issues, progress log</li>
 <li><code>docs/3TCHED-RESOURCES.md</code> — the platform you call, and how (call-file protocol)</li>
@@ -577,80 +663,10 @@ returns <code>omp-meta-ok</code> (~7s). Broker cred hash == <code>META_API_KEY</
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="dev-cycle-blob--mount--identity"><a class="header" href="#dev-cycle-blob--mount--identity">Dev cycle: blob → mount → identity</a></h1>
-<p><strong>The method is the blob.</strong> In 3tched a plugin <em>is</em> its schema, sealed into a
-blob; a method exists if and only if its blob is in the sealed catalog. The
-identity (the chatbot / the subsidiary) never calls code directly: it sees the
-sealed methods as typed files in its own 3tchedFS mount, calls them there, and
-every call is admitted, checked and receipted by the platform. Every new
-method built for the hackathon follows this path — that is the dev cycle.</p>
-<pre><code class="language-text"> this repo (new logic)        platform registration        sealed catalog
- ┌───────────────────┐       ┌────────────────────┐       ┌──────────────────────────┐
- │ crate: types,     │──────▶│ plugin schema +    │──────▶│ &lt;plugin&gt;.&lt;hash16&gt;.blob   │
- │ rules, tests      │       │ dispatch (op-dbus) │ seal  │ (/dev/shm/opdbus/...)    │
- └───────────────────┘       └────────────────────┘       └────────────┬─────────────┘
-                                                                        │ projected by 3tchedFS
-                                                                        ▼
- receipt ◀── bridge: kernel/credential identity, ◀── call file ◀── identity's mount
- (operation id,      exact capability, commit          (write args,   operations/&lt;plugin&gt;/&lt;method&gt;/call
-  chain event)                                          read result)
-</code></pre>
-<h2 id="the-three-relationships"><a class="header" href="#the-three-relationships">The three relationships</a></h2>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>Relationship</th><th>What it means</th><th>Where to see it</th></tr>
-</thead>
-<tbody>
-<tr><td><strong>blob ↔ method</strong></td><td>A method exists only as a sealed blob; its schema is the single source of its arguments, results and required capability</td><td><code>ls /dev/shm/opdbus/plugin-blobs/</code> (72 blobs today); <code>opblob inspect &lt;file.blob&gt;</code></td></tr>
-<tr><td><strong>blob ↔ mount</strong></td><td>3tchedFS projects each sealed method as <code>operations/&lt;plugin&gt;/&lt;method&gt;/{call,metadata.json,input.schema.json,output.schema.json}</code>; a new blob appears in every identity’s mount, with no mount change</td><td><code>/home/3tched/Hackathon/3tchedfs/operations/</code> (as <code>3tched</code>)</td></tr>
-<tr><td><strong>mount ↔ chatbot</strong></td><td>The identity acts <strong>only</strong> through its mount, by writing to call files. There is no MCP path: MCP was removed and replaced by 3tchedFS. <code>3tched-fs toolsets --publish</code> only announces the sealed method list on EMQX; it does not call anything</td><td>call-file helper <code>3tched-callfile</code></td></tr>
-</tbody>
-</table>
-</div>
-<h2 id="steps-for-a-new-method-eg-approvalsrequest_approval"><a class="header" href="#steps-for-a-new-method-eg-approvalsrequest_approval">Steps for a new method (e.g. <code>approvals.request_approval</code>)</a></h2>
-<ol>
-<li><strong>Logic, in this repo.</strong> Types, rules and tests in a crate here (e.g.
-<code>approvals/</code>). No I/O. This is the judged, new work.</li>
-<li><strong>Register as a plugin, on the platform.</strong> A thin schema + dispatch module in
-<code>/srv/git/odbus-verified/crates/op-plugins/src/state_plugins/&lt;name&gt;.rs</code>,
-registered in <code>default_registry.rs</code>, calling this repo’s crate. Follow that
-repo’s <code>AGENTS.md</code> (plugin is the schema; no parallel schema files). Keep it
-an adapter: decisions stay in this repo’s crate.</li>
-<li><strong>Seal a development catalog, without touching live.</strong> Build, then
-<code>opblob seal-plugins &lt;dev-catalog-dir&gt;</code> and inspect the new blob
-(<code>opblob inspect</code>). The live catalog is unchanged.</li>
-<li><strong>Release.</strong> The only deploy path is the platform release
-(<code>./activate-golden.sh</code> → slot activation). After it, the blob is in the live
-catalog and the operation file appears in the subsidiary’s mount
-automatically.</li>
-<li><strong>Grant.</strong> The identity gets the method’s exact capability (an owner-approved
-grant change). Without it, the call is refused with the capability named —
-which is itself demonstrable.</li>
-<li><strong>Call and verify.</strong> As the identity: write arguments to the call file,
-read the result from the same handle, keep the <code>operation_id</code> and
-<code>event_hash</code> as evidence.</li>
-</ol>
-<h2 id="mounts-today-2026-10-28"><a class="header" href="#mounts-today-2026-10-28">Mounts today (2026-10-28)</a></h2>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>Mount</th><th>Identity</th><th>Status</th></tr>
-</thead>
-<tbody>
-<tr><td><code>/home/3tched/Hackathon/3tchedfs</code> (host)</td><td>Hackathon subsidiary <code>&lt;subsidiary-session&gt;</code></td><td>mounted, runit <code>subsidiary-hackathon-3tchedfs</code></td></tr>
-<tr><td><code>/run/mount/3tchedfs</code>, <code>/run/mount/threetched</code> (inside the identity container)</td><td>same identity</td><td>mounted</td></tr>
-<tr><td><code>/run/mounts/3tchedFS</code>, <code>/run/mounts/threetched</code> (host)</td><td>owner <code>&lt;owner-session&gt;</code></td><td><strong>not mounted</strong> — fstab entries missing since the reboot; owner’s decision to restore</td></tr>
-</tbody>
-</table>
-</div>
-<p>Known limits: live state reads (<code>plugins/*/value.json</code>) return EIO — use
-operations; the <code>3tched-fs call --mount</code> CLI cannot drive guest-kernel mounts —
-use the call files directly. Do not use the leftover <code>3tched-fs mcp</code>
-subcommand or the bridge’s <code>/mcp</code> endpoint: MCP is retired in favour of the
-mount.</p>
-<div style="break-before: page; page-break-before: always;"></div>
 <h1 id="drop-in-spec-one-generator-every-surface"><a class="header" href="#drop-in-spec-one-generator-every-surface">Drop-in spec: one generator, every surface</a></h1>
+<blockquote>
+<p>How these methods reach the identity: sealed blob → 3tchedFS operation file → call → receipt. See <a href="DEV-CYCLE.html"><code>DEV-CYCLE.md</code></a>.</p>
+</blockquote>
 <p>The drop-in is the existing 3tched UI generator, repurposed: the same spec
 pipeline that renders the web UI also renders into consumer apps (team chat
 first), and every action it exposes is governed by the new compliance
@@ -795,6 +811,9 @@ a bug the model invented.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="approvals-spec-two-approval-root-policy-co-signer-break-glass"><a class="header" href="#approvals-spec-two-approval-root-policy-co-signer-break-glass">Approvals spec: two-approval root, policy co-signer, break-glass</a></h1>
+<blockquote>
+<p>How these methods reach the identity: sealed blob → 3tchedFS operation file → call → receipt. See <a href="DEV-CYCLE.html"><code>DEV-CYCLE.md</code></a>.</p>
+</blockquote>
 <p>Part of the judged <strong>policy</strong> and <strong>rule enforcement</strong> work. Status: <strong>planned</strong>
 (nothing here is built yet). Existing platform pieces are marked <strong>existing</strong>.</p>
 <h2 id="1-goal"><a class="header" href="#1-goal">1. Goal</a></h2>

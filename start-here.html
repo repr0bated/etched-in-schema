@@ -35,10 +35,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-b80fc186.js";
+            window.path_to_searchindex_js = "searchindex-80b4d409.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-dd34a01b.js"></script>
+        <script src="toc-e5db6bcb.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -184,6 +184,17 @@
 <p>You are building <strong>Etched in Schema</strong> for the Meta Model API hackathon,
 <strong>Startup Track — judged on a working product</strong>. Builder: Jeremy Hobson
 (3tched). Use Meta’s models (Muse Spark) for the product’s AI steps.</p>
+<blockquote>
+<p><strong>The method is the blob — the identity acts only through 3tchedFS.</strong>
+Every method is a plugin schema sealed into a blob. The identity’s own
+3tchedFS mount projects each sealed method as a typed file
+(<code>operations/&lt;plugin&gt;/&lt;method&gt;/call</code>); the identity writes arguments there,
+the bridge admits it by kernel identity, checks the exact capability, commits
+and returns a receipt. No MCP, no direct API calls, no <code>ovs-*</code> commands.
+Every new method built here follows: <strong>logic in this repo → plugin
+registration → sealed blob → operation file in the mount → call → receipt.</strong>
+See <a href="docs/DEV-CYCLE.html"><code>docs/DEV-CYCLE.md</code></a>.</p>
+</blockquote>
 <h2 id="load-everything"><a class="header" href="#load-everything">Load everything</a></h2>
 <p>Read <strong><code>CONTEXT.md</code></strong> in full before doing anything (it is generated and
 local-only: run <code>tools/build-context.sh</code> if it is missing). Real host
@@ -194,8 +205,8 @@ document in priority order (scope first). If you need a single source, the
 originals are:</p>
 <ol>
 <li><code>README.md</code> — goals, golden path, new vs. existing</li>
-<li><code>docs/DEV-CYCLE.md</code> — <strong>blob → mount → identity</strong>: how every new method is sealed, projected and called
-2b. <code>docs/DROP-IN-SPEC.md</code> — the drop-in to build (generator + team chat + generated backends)</li>
+<li><code>docs/DEV-CYCLE.md</code> — <strong>read first after the README: blob → mount → identity</strong></li>
+<li><code>docs/DROP-IN-SPEC.md</code> — the drop-in to build (generator + team chat + generated backends)</li>
 <li><code>docs/RUNTIME.md</code> — where things run (develop as <code>jeremy</code>, run as <code>3tched</code>), calling the platform, supervision, network, models, secrets</li>
 <li><code>SPARK-BRIEF.md</code> — state, rules, open issues, progress log</li>
 <li><code>docs/3TCHED-RESOURCES.md</code> — the platform you call, and how (call-file protocol)</li>
