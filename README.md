@@ -45,7 +45,7 @@ through its interfaces. The **new development, built and judged here**, is:
 4. **Drop-in consumer app** — the existing UI generator repurposed: one spec
    renders on the web and in tools people already use, starting with **team chat** — an open-source
    Matrix client (Element) first, reaching other chat tools through Matrix
-   bridges —, and every action is governed by 1–3. Spec:
+   bridges — and every action is governed by 1–3. Spec:
    [docs/DROP-IN-SPEC.md](docs/DROP-IN-SPEC.md).
    A user asks in team chat; the request is routed, checked against policy,
    executed through the identity or refused, and the receipt comes back in the
