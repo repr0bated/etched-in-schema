@@ -5,7 +5,7 @@ How an identity works as the embodiment of a subsidiary. Marked **existing**
 
 ## Hierarchy (owner model)
 
-- **Root**: the 3tched control plane. Its chatbot is a one-off part of the
+- **Root**: the 3tched control plane — the only root on the system. Its chatbot is a one-off part of the
   system core, to be fused with the WireGuard server key so it can never be a
   peer (session `58287215-0136-f7c3-0a02-d51a593b75ef`). **Planned** — no
   supported re-key operation yet.
