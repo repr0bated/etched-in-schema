@@ -35,6 +35,17 @@ reboots (**proven**). It acts as identity `b0c777e3…`, which today also holds
 **root** grants — keep demo actions to pre-tested operations until a dedicated
 low-privilege identity exists (**planned**; blocked on storage repair).
 
+## OpenFlow development (2026-10-28)
+
+- Bridge `etched0`: isolated OVS bridge for the subsidiary (no ports, no
+  address, no uplink, fail-mode `secure`). Never touch `ovsbr0` — it carries
+  3tched's own networking.
+- The subsidiary holds `openflow.read` (**proven**: `get_datapath_health
+  {bridge: etched0}` completed). `openflow.write` is withheld until
+  `enforcement/` refuses any flow operation whose `bridge` is not `etched0`;
+  platform capabilities are not resource-scoped, so this check is ours to
+  build (and a good demo of a refusal).
+
 ## Process supervision
 
 The host runs **runit** (not systemd). A long-running service is a runit
