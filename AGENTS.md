@@ -13,7 +13,10 @@ repeat the preload for its own session.
 - **Rust (router, policy, enforcement, approvals):** `rust`, `rust-patterns`, `rust-testing`, `rust-memory-optimization`, `memory-safety-patterns`
 - **Compliance (OSCAL):** `trestle-workspace`, `trestle-oscal-models`, `trestle-authoring-workflow`, `trestle-control-implementation`, `trestle-validation`, `trestle-governance`, `trestle-assessment`, `trestle-compliance-pipeline`, `trestle-poam`, `trestle-task-system`, `compliance-check`
 - **Judgments (Jev):** `typesafe-ai`
-- **Platform (3tched, used through interfaces):** `grpc-expert`, `grpc-protocol-expert`, `incus`, `btrfs`
+- **Platform (3tched, used through interfaces):** `grpc-expert`, `grpc-protocol-expert`, `grpc`, `protobuf`, `incus`, `btrfs`
+- **Network / OVS / OpenFlow:** `ovs-db-analysis`, `network-config-validation`. There is no OpenFlow skill: for OpenFlow use the platform's `openflow` plugin source (`/srv/git/odbus-verified/crates/op-plugins/src/state_plugins/openflow*.rs`) and the vendored `rovs-openflow` library (`/srv/git/odbus-verified/vendor/rovs-openflow`), and change flows only through the plugin, never with `ovs-*` commands.
+- **FUSE / 3tchedFS:** `fuse`, `kernel-fuse-diagnosis`
+- **Memory and workflow:** `unified-memory`, `using-superpowers`
 
 UI references (from-scratch UI): `ui/README.md`, `ui/reference/`.
 
