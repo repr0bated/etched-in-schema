@@ -54,6 +54,13 @@ the reason → the thread shows result, receipts and any redaction.
 - Never edit 3tched's database directly, never bypass a refusal, never call
   plugins from an adapter; adapters hold no grants.
 - Mark every claim **proven** (with evidence) or **planned**.
+- **No stubs presented as built.** The pre-commit hook
+  (`tools/check-no-stubs.sh`) refuses unfinished-work markers in code and docs
+  (the list is in the script), and refuses a book page in the main sections
+  whose folder holds only a README — list unbuilt work under `# Planned` in
+  `book/src/SUMMARY.md`. Each Rust crate denies Clippy's unfinished-code lints
+  (see `approvals/Cargo.toml`). Identifier placeholders such as `<door-ip>` are
+  allowed and required.
 - Do not name vendors in product copy (say "team chat", not a brand).
 - Commit small and often, and **push often** — the public history is the
   evidence the work was done during the hackathon. Never rewrite history or

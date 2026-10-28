@@ -19,10 +19,13 @@
 - [OSCAL](oscal.md)
 - [Tag Taxonomy](tag-taxonomy.md)
 - [Router Data Model](router-data-model.md)
-- [Rule Enforcement](enforcement.md)
 
 # Code
 
 - [Approvals Crate](approvals.md)
 - [API Reference](api.md)
+
+# Planned
+
+- [Rule Enforcement](enforcement.md)
 - [Consumer Apps](consumer.md)
