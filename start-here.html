@@ -35,10 +35,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-120accfc.js";
+            window.path_to_searchindex_js = "searchindex-fdd7cb23.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-032c8853.js"></script>
+        <script src="toc-2370a1c3.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -229,6 +229,13 @@ tested code executes them. Judgments from the model, decisions in code.</li>
 <li>Never edit 3tched’s database directly, never bypass a refusal, never call
 plugins from an adapter; adapters hold no grants.</li>
 <li>Mark every claim <strong>proven</strong> (with evidence) or <strong>planned</strong>.</li>
+<li><strong>No stubs presented as built.</strong> The pre-commit hook
+(<code>tools/check-no-stubs.sh</code>) refuses unfinished-work markers in code and docs
+(the list is in the script), and refuses a book page in the main sections
+whose folder holds only a README — list unbuilt work under <code># Planned</code> in
+<code>book/src/SUMMARY.md</code>. Each Rust crate denies Clippy’s unfinished-code lints
+(see <code>approvals/Cargo.toml</code>). Identifier placeholders such as <code>&lt;door-ip&gt;</code> are
+allowed and required.</li>
 <li>Do not name vendors in product copy (say “team chat”, not a brand).</li>
 <li>Commit small and often, and <strong>push often</strong> — the public history is the
 evidence the work was done during the hackathon. Never rewrite history or

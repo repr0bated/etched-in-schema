@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-120accfc.js";
+            window.path_to_searchindex_js = "searchindex-fdd7cb23.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-032c8853.js"></script>
+        <script src="toc-2370a1c3.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -355,6 +355,13 @@ tested code executes them. Judgments from the model, decisions in code.</li>
 <li>Never edit 3tched’s database directly, never bypass a refusal, never call
 plugins from an adapter; adapters hold no grants.</li>
 <li>Mark every claim <strong>proven</strong> (with evidence) or <strong>planned</strong>.</li>
+<li><strong>No stubs presented as built.</strong> The pre-commit hook
+(<code>tools/check-no-stubs.sh</code>) refuses unfinished-work markers in code and docs
+(the list is in the script), and refuses a book page in the main sections
+whose folder holds only a README — list unbuilt work under <code># Planned</code> in
+<code>book/src/SUMMARY.md</code>. Each Rust crate denies Clippy’s unfinished-code lints
+(see <code>approvals/Cargo.toml</code>). Identifier placeholders such as <code>&lt;door-ip&gt;</code> are
+allowed and required.</li>
 <li>Do not name vendors in product copy (say “team chat”, not a brand).</li>
 <li>Commit small and often, and <strong>push often</strong> — the public history is the
 evidence the work was done during the hackathon. Never rewrite history or
@@ -1353,9 +1360,6 @@ function over this table + the OSCAL JSON; no I/O, no grants. Policy and
 enforcement stay separate crates. Model (Muse Spark) supplies judgments
 (tag suggestions); this table decides.</p>
 <div style="break-before: page; page-break-before: always;"></div>
-<h1 id="enforcement"><a class="header" href="#enforcement">enforcement</a></h1>
-<p>Boundary compiler: OSCAL rules → capability grants, router budgets, OpenFlow policy. Enforcement itself is the existing bridge capability check and the <code>openflow</code> plugin.</p>
-<div style="break-before: page; page-break-before: always;"></div>
 <h1 id="approvals"><a class="header" href="#approvals">approvals</a></h1>
 <p>Rust implementation of <code>docs/APPROVALS-SPEC.md</code> §§4–7 — <strong>implemented as pure
 logic (12 tests pass); not yet wired</strong> into the bridge, the co-signer model call
@@ -1370,7 +1374,10 @@ bound to request/args/executor/TTL. Tests cover acceptance criteria 3
 <ul>
 <li><a href="api/approvals/index.html"><code>approvals</code></a> — two-approval root, co-signer truth table, single-use tickets.</li>
 </ul>
-<p>More crates (router, policy, enforcement) will appear here as they land.</p>
+<p>Only crates that are implemented are listed.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="enforcement"><a class="header" href="#enforcement">enforcement</a></h1>
+<p>Boundary compiler: OSCAL rules → capability grants, router budgets, OpenFlow policy. Enforcement itself is the existing bridge capability check and the <code>openflow</code> plugin.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="consumer"><a class="header" href="#consumer">consumer</a></h1>
 <p>Drop-in consumer apps that bring governed agent actions into tools people already use. Each app only relays requests and results: routing, policy and enforcement live in <code>routing/</code>, <code>enforcement/</code> and the policy engine, so every app behaves the same.</p>
