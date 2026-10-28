@@ -6,7 +6,11 @@ You are building **Etched in Schema** for the Meta Model API hackathon,
 
 ## Load everything
 
-Read **`CONTEXT.md`** in full before doing anything. It bundles every project
+Read **`CONTEXT.md`** in full before doing anything (it is generated and
+local-only: run `tools/build-context.sh` if it is missing). Real host
+addresses and identity IDs are in the git-ignored `local/IDENTIFIERS.md`; the
+public docs use placeholders such as `<door-ip>` and `<subsidiary-session>`.
+Never commit real addresses, IDs or keys — this repository is public. It bundles every project
 document in priority order (scope first). If you need a single source, the
 originals are:
 

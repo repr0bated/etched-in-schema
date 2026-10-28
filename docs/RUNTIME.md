@@ -31,7 +31,7 @@ Schemas: `operations/<plugin>/<method>/{input,output}.schema.json`.
 Live state files (`plugins/*/value.json`) currently return EIO — use operations.
 
 The mount is supervised by runit `subsidiary-hackathon-3tchedfs` and survives
-reboots (**proven**). It acts as identity `b0c777e3…`, which today also holds
+reboots (**proven**). It acts as identity `<subsidiary-session>`, which today also holds
 **root** grants — keep demo actions to pre-tested operations until a dedicated
 low-privilege identity exists (**planned**; blocked on storage repair).
 
@@ -57,7 +57,7 @@ controlled with `sudo sv start|stop|status <name>`. Model new units on
 
 ## Network rules
 
-- The **only** service ingress on this host is `10.0.0.2:8090`. The product
+- The **only** service ingress on this host is `<door-ip>:8090`. The product
   must not open new listening ports to the outside.
 - The team-chat adapter connects **outbound** to its homeserver (no inbound
   webhook). A local homeserver for the demo binds to loopback only.

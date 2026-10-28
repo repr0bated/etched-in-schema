@@ -14,8 +14,8 @@ Every decision — approve, refuse, override — produces a receipt with reasons
 
 | Actor | Identity | Role |
 |---|---|---|
-| Owner | human principal `c9bdf32e…`, session `414fbc56…` (existing, containerless) | requests and approves root actions |
-| Co-signer | control-plane chatbot (root identity; today `1262e982…`) | approves **by policy only**; never executes |
+| Owner | human principal `<owner-principal>`, session `<owner-session>` (existing, containerless) | requests and approves root actions |
+| Co-signer | control-plane chatbot (root identity; today `<subsidiary-principal>`) | approves **by policy only**; never executes |
 | Executor | the identity that performs the operation (e.g. the Hackathon subsidiary) | runs the operation after approval, through its mount |
 | Later | a designated human second approver | replaces the co-signer for the highest tier |
 

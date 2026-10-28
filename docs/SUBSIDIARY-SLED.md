@@ -7,7 +7,7 @@ How an identity works as the embodiment of a subsidiary. Marked **existing**
 
 - **Root**: the 3tched control plane — the only root on the system. Its chatbot is a one-off part of the
   system core, to be fused with the WireGuard server key so it can never be a
-  peer (session `58287215-0136-f7c3-0a02-d51a593b75ef`). **Planned** — no
+  peer (session `<root-session>`). **Planned** — no
   supported re-key operation yet.
 - **Root has no execution rights**: it holds authority but executes nothing
   itself; execution is delegated through the execution tracker. A human acting
@@ -33,7 +33,7 @@ How an identity works as the embodiment of a subsidiary. Marked **existing**
   **Planned.**
 - **Subsidiaries**: Linux users on the system. Each subsidiary is bounded by
   its home directory. **Planned.**
-- **Hackathon subsidiary**: embodied by identity `b0c777e3…` (today's
+- **Hackathon subsidiary**: embodied by identity `<subsidiary-session>` (today's
   `3tchedCtlChatbot`). **Existing.**
 
 ## What the sled is (existing)
@@ -58,7 +58,7 @@ only verifies externally mounted storage. Never edit sled rows directly.
 ## How a subsidiary acts
 
 1. The subsidiary's identity runs in its own container with a 3tchedFS mount
-   (lungs). **Proven** for `b0c777e3`.
+   (lungs). **Proven** for `<subsidiary-session>`.
 2. On the host, the same identity's mount is exposed inside the
    subsidiary's home, e.g. `/home/<user>/<Subsidiary>/3tchedfs` and
    `/home/<user>/<Subsidiary>/threetched`, bound to that session

@@ -6,7 +6,7 @@ and are used through their interfaces. Status as of 2026-10-28.
 ## The identity and its mount
 
 - **Identity container** `3tchedCtlChatbot` — session
-  `b0c777e3-0955-cd8b-3d01-ca12998cae28`, Incus pool `3tched`, profile
+  `<subsidiary-session>`, Incus pool `3tched`, profile
   `3tched-lungs`, persist volume, kept up by runit `chatbot-identity`. **Proven.**
 - **3tchedFS mount** inside it at `/run/mount/3tchedfs` (and the threetched
   view at `/run/mount/threetched`), served over the lungs Unix socket
@@ -73,8 +73,8 @@ corpora). Voyage-4 embeddings, 1024 dimensions, one fused space.
 
 - Router: zeroclaw on `127.0.0.1:8084` (`zeroclaw.v1`), agent `dashboard`
   used by chat. Currently Salad `qwen3.5-35b-a3b`; Meta not yet wired.
-- MCP: compact OP-DBUS tools at `https://10.0.0.2:8090/mcp?opdbus_mode=compact`.
-- UI: `http://10.0.0.2:8080` (door `10.0.0.2:8090`).
+- MCP: compact OP-DBUS tools at `https://<door-ip>:8090/mcp?opdbus_mode=compact`.
+- UI: `http://<door-ip>:8080` (door `<door-ip>:8090`).
 
 ## Tools on the host
 

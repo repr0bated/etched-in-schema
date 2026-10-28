@@ -3,3 +3,5 @@ target/
 dist/
 .env
 *.key
+local/
+CONTEXT.md

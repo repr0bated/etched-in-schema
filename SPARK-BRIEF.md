@@ -26,7 +26,7 @@ gap blocking Web3 adoption.
 ## Proven today
 
 - **Identity container**: `3tchedCtlChatbot` (Incus, pool `3tched`, profile
-  `3tched-lungs`), identity session `b0c777e3-0955-cd8b-3d01-ca12998cae28`,
+  `3tched-lungs`), identity session `<subsidiary-session>`,
   service principal, persist volume, kept running by runit `chatbot-identity`.
 - **First-person operation call**: inside the container, write the plain JSON
   arguments to `/run/mount/3tchedfs/operations/<plugin>/<method>/call` (open
@@ -41,7 +41,7 @@ gap blocking Web3 adoption.
   grants.
 - **No network path to 3tched**: the twin talks to 3tched only through its FUSE
   mount. Its only network will be the internet (Meta API, blockchain).
-- **Chat path**: UI (`http://10.0.0.2:8080`) → door `10.0.0.2:8090` →
+- **Chat path**: UI (`http://<door-ip>:8080`) → door `<door-ip>:8090` →
   `chat_router.Chat` → zeroclaw router on `127.0.0.1:8084` (protocol
   `zeroclaw.v1`) → model. Every turn receipted.
 - **Avatar**: `IdentityAvatar.svelte` speaks a fixed intro script (exact
@@ -104,12 +104,12 @@ it only if it fits the flow.
   custom provider stub (`HERMES_CUSTOM_META_API_KEY`).
 - Router turn costs ~15k tokens (skills bundle removed to halve it). Qwen does
   not reliably emit text tool calls; MCP compact tools are connected
-  (`https://10.0.0.2:8090/mcp`) but retrieval answers came back empty.
+  (`https://<door-ip>:8090/mcp`) but retrieval answers came back empty.
 - Live state reads through the mount (`plugins/*/value.json`) return EIO.
 - Next release will fail activation: `notebook-sources-sync` cannot pass its
   30 s check after restart. Fix before releasing.
 - Re-key of the core chatbot to the WireGuard server key (session
-  `58287215-0136-f7c3-0a02-d51a593b75ef`) has no supported op yet.
+  `<root-session>`) has no supported op yet.
 - UI overlay on `dashboard-release` is runtime-only; lost on reboot or release.
 
 ## CMS: compliant by construction (owner direction, 2026-10-28)
