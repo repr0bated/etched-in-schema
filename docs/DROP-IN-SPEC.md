@@ -1,7 +1,7 @@
 # Drop-in spec: one generator, every surface
 
 The drop-in is the existing 3tched UI generator, repurposed: the same spec
-pipeline that renders the web UI also renders into consumer apps (Slack
+pipeline that renders the web UI also renders into consumer apps (team chat
 first), and every action it exposes is governed by the new compliance
 routing, policy and enforcement.
 
@@ -25,7 +25,7 @@ catalog; specs are validated before they are shown; the plugin is the schema.
 
 **The generator is proven** (owner, 2026-10-28): it did this job well before
 any compliance layer existed. Reuse it as is. Do not rebuild generation,
-validation or the catalog; the new work is only the Slack renderer target, the
+validation or the catalog; the new work is only the team chat renderer target, the
 five governance components (2.3), and routing every action through
 compliance, policy and enforcement (2.2).
 
@@ -40,12 +40,12 @@ refusal silently).
 | Target | Status | Notes |
 |---|---|---|
 | Web (Svelte) | existing | reference renderer |
-| **Slack** (Block Kit) | new — first | messages, modals, interactive buttons |
+| **team chat** (Matrix message) | new — first | messages, modals, interactive buttons |
 | Teams (Adaptive Cards), email (HTML) | new — later | same mapping approach |
 
-Component → Slack mapping (initial):
+Component → team chat mapping (initial):
 
-| Catalog component | Slack Block Kit |
+| Catalog component | Matrix messages (HTML + reactions/buttons via widgets) |
 |---|---|
 | heading, text | `header`, `section` (mrkdwn) |
 | key/value facts | `section` with `fields` |
@@ -63,7 +63,7 @@ Component → Slack mapping (initial):
 Every action, on every target, takes one path:
 
 ```
-user action (web click / Slack button / Slack command)
+user action (web click / team chat button / team chat command)
   → consumer adapter (identifies the user; no authority of its own)
   → compliance router: request → OSCAL controls → candidate plugin operations
   → policy engine: allow / refuse (with reason) / needs approval (n of m)
@@ -75,7 +75,7 @@ user action (web click / Slack button / Slack command)
 - The adapter never calls plugins directly and never holds grants.
 - A refusal is a first-class result, rendered with the missing capability and
   the rule.
-- Approvals are collected on the target (Slack buttons) and counted by the
+- Approvals are collected on the target (chat buttons) and counted by the
   policy engine; root actions need two different humans.
 - Redaction is applied by policy before content reaches any target; the
   receipt records it.
@@ -83,7 +83,7 @@ user action (web click / Slack button / Slack command)
 ### 2.3 New catalog components
 
 `receipt`, `refusal`, `approval_request`, `redaction_notice`, `policy_decision`.
-They are declared in the catalog like every other component (web and Slack
+They are declared in the catalog like every other component (web and team chat
 renderers both implement them).
 
 ### 2.4 Generation stays the same
@@ -96,7 +96,7 @@ model to components the destination supports.
 
 | Adapter | Inbound | Outbound | Identity of the user |
 |---|---|---|---|
-| Slack | slash command, app mention, button, modal submit (Socket Mode: no public inbound URL) | Block Kit messages in thread | Slack user mapped to a 3tched principal; unmapped users get read-only answers |
+| team chat | slash command, app mention, button, modal submit (outbound client connection to the homeserver: no public inbound URL) | Matrix message messages in thread | chat user mapped to a 3tched principal; unmapped users get read-only answers |
 
 Adapters are thin: parse the event, look up the principal, hand the request to
 the router, render the reply. All decisions happen in routing, policy and
@@ -104,10 +104,10 @@ enforcement, so every surface behaves identically.
 
 ## 4. Acceptance criteria (the working product)
 
-1. A spec that renders on the web renders in Slack with the same actions.
-2. From Slack, an allowed request runs through the identity and the thread
+1. A spec that renders on the web renders in team chat with the same actions.
+2. From team chat, an allowed request runs through the identity and the thread
    shows the result and its receipt (operation id, outcome).
-3. An out-of-bounds request is refused in Slack with the exact missing
+3. An out-of-bounds request is refused in team chat with the exact missing
    capability and the rule.
 4. A root-level request shows an approval request and runs only after two
    different humans approve.

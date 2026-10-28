@@ -6,7 +6,7 @@ Builder: Jeremy Hobson (3tched).
 **Scope (owner, 2026-10-28):** the identity/3tched platform predates the
 hackathon and is used through its interfaces. The new, judged development is
 (1) compliance routing, (2) rule enforcement, (3) policy, and (4) a drop-in
-consumer app (Slack first). The UI is optional. See README "Goals" for the
+consumer app (team chat first). The UI is optional. See README "Goals" for the
 golden path. Sections below about the avatar, CMS demo and on-chain anchoring
 are background, not the critical path.
 State as of 2026-10-28. Everything marked **proven** was demonstrated on the

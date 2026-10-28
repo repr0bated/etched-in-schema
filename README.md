@@ -43,17 +43,18 @@ through its interfaces. The **new development, built and judged here**, is:
    identity may do, which actions need human approval (two approvals for root),
    and what happens to data (e.g. PII redaction, retention).
 4. **Drop-in consumer app** — the existing UI generator repurposed: one spec
-   renders on the web and in tools people already use, starting with **Slack**
-   (then e.g. Teams, email), and every action is governed by 1–3. Spec:
+   renders on the web and in tools people already use, starting with **team chat** — an open-source
+   Matrix client (Element) first, reaching other chat tools through Matrix
+   bridges —, and every action is governed by 1–3. Spec:
    [docs/DROP-IN-SPEC.md](docs/DROP-IN-SPEC.md).
-   A user asks in Slack; the request is routed, checked against policy,
+   A user asks in team chat; the request is routed, checked against policy,
    executed through the identity or refused, and the receipt comes back in the
    thread.
 
 The web UI is optional, only if time allows.
 
 **Golden path** (a working product, end to end, three times in a row before
-anything else): a user asks the agent in Slack to do something for a business
+anything else): a user asks the agent in team chat to do something for a business
 → compliance routing maps it to the required controls and operations →
 policy is evaluated → allowed operations run through the identity and return
 receipts; a disallowed one is refused with the reason → the thread shows the
@@ -75,7 +76,7 @@ published interfaces (see [docs/3TCHED-RESOURCES.md](docs/3TCHED-RESOURCES.md)).
 | Compliance router: request / profile → controls → plugin operations | sealed plugin catalog, identity operation files (3tchedFS) |
 | Rule enforcement: OSCAL rules → capability grants, budgets, OpenFlow policy; refusals with reasons | bridge per-call capability check, `openflow` / `ovsdb_bridge`, router budgets |
 | Policy engine and policy documents (approvals, redaction, retention) | `schema_tag_registry` policies, `routing_decision`, `elevation` |
-| Drop-in consumer app: Slack first | chat path to Meta's model, identity receipts |
+| Drop-in consumer app: team chat first (Matrix/Element) | chat path to Meta's model, identity receipts |
 | Business declarations (starting with a Florida LLC) | — |
 
 Pre-existing and **not** part of the judged work: the identity container and
@@ -112,7 +113,7 @@ the router, and the 3tched.com UI.
 | `oscal/` | OSCAL catalog, profiles, component definitions (Compliance Trestle workspace) |
 | `routing/` | tag router: profile → components → operations |
 | `enforcement/` | boundary compiler: OSCAL rules → grants, budgets, OpenFlow policy |
-| `consumer/` | drop-in consumer apps (Slack first) |
+| `consumer/` | drop-in consumer apps (team chat first) |
 | `cms/` | the CMS and its control behaviours (background) |
 | `web3/` | index log, Merkle anchoring |
 | `ui/` | Svelte components for the 3tched.com app |
