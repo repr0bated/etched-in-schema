@@ -42,8 +42,10 @@ through its interfaces. The **new development, built and judged here**, is:
 3. **Policy** — authoring, versioning and evaluating the rules: what each
    identity may do, which actions need human approval (two approvals for root),
    and what happens to data (e.g. PII redaction, retention).
-4. **Drop-in consumer app** — a module that brings governed agent actions into
-   tools people already use, starting with **Slack** (then e.g. Teams, email).
+4. **Drop-in consumer app** — the existing UI generator repurposed: one spec
+   renders on the web and in tools people already use, starting with **Slack**
+   (then e.g. Teams, email), and every action is governed by 1–3. Spec:
+   [docs/DROP-IN-SPEC.md](docs/DROP-IN-SPEC.md).
    A user asks in Slack; the request is routed, checked against policy,
    executed through the identity or refused, and the receipt comes back in the
    thread.

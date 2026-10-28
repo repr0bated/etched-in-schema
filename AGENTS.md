@@ -1,7 +1,7 @@
 # AGENTS.md — etched-in-schema
 
 Read `SPARK-BRIEF.md` first: it is the current project state, paths, rules and plan.
-Then `README.md`, `docs/3TCHED-RESOURCES.md`, `docs/SUBSIDIARY-SLED.md`, `docs/PRIOR-ART.md` and `docs/WINNING.md`.
+Then `README.md`, `docs/3TCHED-RESOURCES.md`, `docs/SUBSIDIARY-SLED.md`, `docs/PRIOR-ART.md`, `docs/WINNING.md` and `docs/DROP-IN-SPEC.md` (the drop-in to build).
 For any backend work, also read `/srv/git/odbus-verified/AGENTS.md` and its `HANDOFF.md`.
 
 - Schemas here are drafts. They become sealed 3tched plugins (Rust) later; do not copy them into op-dbus as files.
