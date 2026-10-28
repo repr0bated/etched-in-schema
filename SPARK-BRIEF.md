@@ -72,6 +72,7 @@ gap blocking Web3 adoption.
   (btrfs send/receive slots). Never hand-copy binaries onto the host as a deploy.
 - One Cargo process at a time; release builds need `CXXFLAGS="-include cstdint"`.
 - Tests only when the owner asks.
+- Commit and push at the end of every working turn (owner policy, 2026-10-28): public repo `github.com/repr0bated/etched-in-schema`, branch `master`. No turn ends with unpushed work.
 
 ## Plan (10 days)
 
