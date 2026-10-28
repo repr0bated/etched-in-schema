@@ -76,6 +76,12 @@ corpora). Voyage-4 embeddings, 1024 dimensions, one fused space.
 - No MCP: it was removed and replaced by the 3tchedFS mount. Do not build on the bridge's `/mcp` endpoint or `3tched-fs mcp`.
 - UI: `http://<door-ip>:8080` (door `<door-ip>:8090`).
 
+## The 3tched.com UI repository
+
+`/srv/git/3tched.com` — 3tched's existing web UI (SvelteKit + json-render,
+served by op-web). Pre-existing platform, not hackathon code: see
+`ui/README.md` for what was taken from it (references only).
+
 ## Tools on the host
 
 `trestle` (Compliance Trestle, OSCAL authoring/validation), `bd`/`bv`

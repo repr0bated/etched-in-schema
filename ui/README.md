@@ -24,3 +24,13 @@ svelte.dev and vite.dev.
 
 Rules: Svelte + json-render only; every visible element is declared in the
 catalog; the element map is a content reference, not a design to copy.
+
+## The 3tched.com UI repository (pre-existing, not hackathon code)
+
+`/srv/git/3tched.com` (github.com/repr0bated/3tched.com) is 3tched's own web
+UI: SvelteKit + json-render, served by op-web, talking only to the door. It
+predates the hackathon. The hackathon UI does **not** share code with it; the
+only things taken from it are the references in `reference/` (the design-free
+element map and menu of the retired operation dashboard, and the json-render
+docs). Do not import from, build in, or publish from that repository for the
+hackathon. Its own documentation and references stay there for the platform.
