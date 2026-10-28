@@ -6,4 +6,5 @@
 
 pub mod compliance;
 pub mod models;
+pub mod projection;
 pub mod ui;
