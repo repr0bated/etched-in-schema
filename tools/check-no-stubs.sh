@@ -7,12 +7,14 @@
 set -eu
 cd "$(git rev-parse --show-toplevel)"
 bad=0
-markers='\b(TODO|FIXME|XXX|TBD)\b|todo!\(|unimplemented!\(|coming soon|will appear here|not yet implemented'
+markers_cs='\b(TODO|FIXME|XXX|TBD)\b|todo!\(|unimplemented!\('
+markers_ci='coming soon|will appear here|not yet implemented'
 for f in $(git diff --cached --name-only --diff-filter=ACMR); do
-    case "$f" in tools/check-no-stubs.sh|*.lock|*.json) continue ;; esac
+    # Vendored third-party docs are upstream text, not our work.
+    case "$f" in tools/check-no-stubs.sh|*.lock|*.json|*/reference/docs/*) continue ;; esac
     [ -f "$f" ] || continue
     # Lint settings that forbid stubs (e.g. `todo = "deny"`) are not stubs.
-    hits=$(git show ":$f" | grep -n -i -E "$markers" | grep -v -E '^[0-9]+:[[:space:]]*(todo|unimplemented|dbg_macro)[[:space:]]*=[[:space:]]*"deny"' || true)
+    hits=$( { git show ":$f" | grep -n -E "$markers_cs"; git show ":$f" | grep -n -i -E "$markers_ci"; } | grep -v -E '^[0-9]+:[[:space:]]*(todo|unimplemented|dbg_macro)[[:space:]]*=[[:space:]]*"deny"' || true)
     if [ -n "$hits" ]; then
         echo "check-no-stubs: $f contains a stub marker:"
         printf '%s\n' "$hits" | cut -c1-100 | sed 's/^/  /'
