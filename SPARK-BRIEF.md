@@ -148,3 +148,23 @@ Do not add a mesh (Netmaker/Cloudflare) as an identity layer.
   needs `JUNIE_META_API_KEY` from `https://ai.developer.meta.com/`
   (documented in `docs/RUNTIME.md`); same key gap blocks runtime Meta calls
   for the drop-in.
+- 2026-10-28: LiteLLM wired to Meta Model API — `META_API_KEY` (48ch),
+  `META_MODEL=muse-spark-1.3`, `META_MODEL_BASE_URL=https://api.meta.ai/v1`
+  present in `~/.bash_secrets` and `/home/3tched/.config/etched/env` (0600).
+  Venv `~/.venvs/litellm-meta` (litellm lib) proven: `openai/muse-spark-1.3`
+  + api_base override returns `litellm-meta-ok` (~7s, 204 reasoning tokens).
+  Helper `tools/litellm_meta.py` uses only `META_*` env, `max_tokens=800`
+  default. Note: SPARK-BRIEF line 148 `JUNIE_META_API_KEY` gap is separate
+  (headless Junie auth); runtime Meta calls are unblocked.
+- 2026-10-28: omp in this repo is meta+jev only — new `.omp/config.yml`
+  (project scope, other dirs unaffected): `disabledProviders` denies all 22
+  non-meta chat providers (proven: `omp models` here lists 1 provider,
+  `openai`/`salad` gone; /tmp still lists 23, smol still global salad).
+  `modelRoles` pins default/smol/slow/plan/advisor to meta, judge stays
+  `typesafe/jev-latest`; all `task.agentModelOverrides` mapped to meta.
+  `enabledProviders` allowlist does NOT work at project scope (tested).
+  Shell env fixed for consistency: `~/.bashrc` now sources
+  `~/.bash_secrets` first; `~/.profile` stale `/home/admin/.bash_secrets`
+  path repointed to `$HOME`. Clean-env `omp -p --model meta/muse-spark-1.3`
+  returns `omp-meta-ok` (~7s). Broker cred hash == `META_API_KEY` hash.
+- 2026-10-28: OSCAL foundation built (planned, trestle-validated): `oscal/catalogs/etched-catalog/catalog.json` (5 controls: etched-pt-1 PII redaction, etched-au-1 audit, etched-ac-1 access control, etched-si-1 retention, etched-in-1 integrity; each names candidate plugin ops + evidence; `trestle validate` passes), `oscal/TAG-TAXONOMY.md` v1 (tag -> control -> operations), `oscal/profiles/small-business-portal/profile.json` (all 5 controls + two-person-rule tailoring; validated). `routing/DATA-MODEL.md` v1 proposes Request -> Route -> Decision -> Outcome before code. Next: implement pure `route(Request, Profile)` + policy engine skeleton.
