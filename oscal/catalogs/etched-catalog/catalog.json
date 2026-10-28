@@ -35,16 +35,6 @@
       "value": "pii"
      },
      {
-      "name": "tched-plugin",
-      "ns": "https://3tched.com/ns/oscal",
-      "value": "schema_tag_registry"
-     },
-     {
-      "name": "tched-operation",
-      "ns": "https://3tched.com/ns/oscal",
-      "value": "schema_tag_registry/tag-registry.get-policy"
-     },
-     {
       "name": "evidence-kind",
       "ns": "https://3tched.com/ns/oscal",
       "value": "redaction-receipt"
@@ -53,6 +43,21 @@
       "name": "implementation-status",
       "ns": "https://3tched.com/ns/oscal",
       "value": "planned"
+     },
+     {
+      "name": "tched-plugin",
+      "ns": "https://3tched.com/ns/oscal",
+      "value": "schema_tag_registry"
+     },
+     {
+      "name": "tched-operation",
+      "ns": "https://3tched.com/ns/oscal",
+      "value": "schema_tag_registry/get_policy"
+     },
+     {
+      "name": "sealed-operations",
+      "ns": "https://3tched.com/ns/oscal",
+      "value": "[{\"plugin\": \"schema_tag_registry\", \"method\": \"get_policy\", \"capability\": \"cap.governance.schema-tag-registry.read@v1\", \"blob\": \"schema_tag_registry.efda4ac1ab2e6a22.blob\", \"status\": \"sealed\"}]"
      }
     ]
    },
@@ -90,21 +95,6 @@
       "value": "audit"
      },
      {
-      "name": "tched-plugin",
-      "ns": "https://3tched.com/ns/oscal",
-      "value": "identity_sled"
-     },
-     {
-      "name": "tched-operation",
-      "ns": "https://3tched.com/ns/oscal",
-      "value": "identity_sled/get_own_identity"
-     },
-     {
-      "name": "tched-plugin",
-      "ns": "https://3tched.com/ns/oscal",
-      "value": "routing_decision"
-     },
-     {
       "name": "evidence-kind",
       "ns": "https://3tched.com/ns/oscal",
       "value": "operation-receipt"
@@ -113,6 +103,36 @@
       "name": "implementation-status",
       "ns": "https://3tched.com/ns/oscal",
       "value": "proven:bridge-receipts; planned:assessment-results-export"
+     },
+     {
+      "name": "tched-plugin",
+      "ns": "https://3tched.com/ns/oscal",
+      "value": "identity_sled"
+     },
+     {
+      "name": "tched-plugin",
+      "ns": "https://3tched.com/ns/oscal",
+      "value": "routing_decision"
+     },
+     {
+      "name": "tched-operation",
+      "ns": "https://3tched.com/ns/oscal",
+      "value": "identity_sled/get_own_identity"
+     },
+     {
+      "name": "tched-operation",
+      "ns": "https://3tched.com/ns/oscal",
+      "value": "routing_decision/get_decision"
+     },
+     {
+      "name": "tched-operation",
+      "ns": "https://3tched.com/ns/oscal",
+      "value": "routing_decision/list_decisions"
+     },
+     {
+      "name": "sealed-operations",
+      "ns": "https://3tched.com/ns/oscal",
+      "value": "[{\"plugin\": \"identity_sled\", \"method\": \"get_own_identity\", \"capability\": \"cap.identity.sled.self.read@v1\", \"blob\": \"identity_sled.bb45d8f4ddc6edec.blob\", \"status\": \"sealed\"}, {\"plugin\": \"routing_decision\", \"method\": \"get_decision\", \"capability\": \"cap.governance.routing-decision.read@v1\", \"blob\": \"routing_decision.e8c810cd666d3189.blob\", \"status\": \"sealed\"}, {\"plugin\": \"routing_decision\", \"method\": \"list_decisions\", \"capability\": \"cap.governance.routing-decision.read@v1\", \"blob\": \"routing_decision.e8c810cd666d3189.blob\", \"status\": \"sealed\"}]"
      }
     ]
    },
@@ -150,21 +170,6 @@
       "value": "access-control"
      },
      {
-      "name": "tched-plugin",
-      "ns": "https://3tched.com/ns/oscal",
-      "value": "elevation"
-     },
-     {
-      "name": "tched-operation",
-      "ns": "https://3tched.com/ns/oscal",
-      "value": "elevation/authorize_task"
-     },
-     {
-      "name": "tched-plugin",
-      "ns": "https://3tched.com/ns/oscal",
-      "value": "schema_tag_registry"
-     },
-     {
       "name": "evidence-kind",
       "ns": "https://3tched.com/ns/oscal",
       "value": "refusal-receipt"
@@ -173,6 +178,31 @@
       "name": "implementation-status",
       "ns": "https://3tched.com/ns/oscal",
       "value": "proven:bridge-refusal; planned:two-person-rule"
+     },
+     {
+      "name": "tched-plugin",
+      "ns": "https://3tched.com/ns/oscal",
+      "value": "elevation"
+     },
+     {
+      "name": "tched-plugin",
+      "ns": "https://3tched.com/ns/oscal",
+      "value": "schema_tag_registry"
+     },
+     {
+      "name": "tched-operation",
+      "ns": "https://3tched.com/ns/oscal",
+      "value": "elevation/authorize_task"
+     },
+     {
+      "name": "tched-operation",
+      "ns": "https://3tched.com/ns/oscal",
+      "value": "schema_tag_registry/get_tag"
+     },
+     {
+      "name": "sealed-operations",
+      "ns": "https://3tched.com/ns/oscal",
+      "value": "[{\"plugin\": \"elevation\", \"method\": \"authorize_task\", \"capability\": \"elevation.authorize\", \"blob\": \"elevation.88a854ab9ebe7e45.blob\", \"status\": \"sealed\"}, {\"plugin\": \"schema_tag_registry\", \"method\": \"get_tag\", \"capability\": \"cap.governance.schema-tag-registry.read@v1\", \"blob\": \"schema_tag_registry.efda4ac1ab2e6a22.blob\", \"status\": \"sealed\"}]"
      }
     ]
    },
@@ -210,21 +240,6 @@
       "value": "retention"
      },
      {
-      "name": "tched-plugin",
-      "ns": "https://3tched.com/ns/oscal",
-      "value": "cron"
-     },
-     {
-      "name": "tched-operation",
-      "ns": "https://3tched.com/ns/oscal",
-      "value": "cron/schedule"
-     },
-     {
-      "name": "tched-plugin",
-      "ns": "https://3tched.com/ns/oscal",
-      "value": "workflows"
-     },
-     {
       "name": "evidence-kind",
       "ns": "https://3tched.com/ns/oscal",
       "value": "scheduled-operation-receipt"
@@ -233,6 +248,31 @@
       "name": "implementation-status",
       "ns": "https://3tched.com/ns/oscal",
       "value": "planned"
+     },
+     {
+      "name": "tched-plugin",
+      "ns": "https://3tched.com/ns/oscal",
+      "value": "cron"
+     },
+     {
+      "name": "tched-plugin",
+      "ns": "https://3tched.com/ns/oscal",
+      "value": "workflows"
+     },
+     {
+      "name": "tched-operation",
+      "ns": "https://3tched.com/ns/oscal",
+      "value": "cron/create_job"
+     },
+     {
+      "name": "tched-operation",
+      "ns": "https://3tched.com/ns/oscal",
+      "value": "workflows/start_workflow"
+     },
+     {
+      "name": "sealed-operations",
+      "ns": "https://3tched.com/ns/oscal",
+      "value": "[{\"plugin\": \"cron\", \"method\": \"create_job\", \"capability\": \"cron.invoke\", \"blob\": \"cron.880d0e766972f96b.blob\", \"status\": \"sealed\"}, {\"plugin\": \"workflows\", \"method\": \"start_workflow\", \"capability\": \"workflows.write\", \"blob\": \"workflows.a739c048cf0ba561.blob\", \"status\": \"sealed\"}]"
      }
     ]
    },
@@ -270,11 +310,6 @@
       "value": "integrity"
      },
      {
-      "name": "tched-plugin",
-      "ns": "https://3tched.com/ns/oscal",
-      "value": "identity_sled"
-     },
-     {
       "name": "evidence-kind",
       "ns": "https://3tched.com/ns/oscal",
       "value": "anchor-record"
@@ -283,6 +318,31 @@
       "name": "implementation-status",
       "ns": "https://3tched.com/ns/oscal",
       "value": "planned"
+     },
+     {
+      "name": "tched-plugin",
+      "ns": "https://3tched.com/ns/oscal",
+      "value": "identity_sled"
+     },
+     {
+      "name": "tched-plugin",
+      "ns": "https://3tched.com/ns/oscal",
+      "value": "web3"
+     },
+     {
+      "name": "tched-operation",
+      "ns": "https://3tched.com/ns/oscal",
+      "value": "identity_sled/get_identity"
+     },
+     {
+      "name": "tched-operation",
+      "ns": "https://3tched.com/ns/oscal",
+      "value": "web3/anchor"
+     },
+     {
+      "name": "sealed-operations",
+      "ns": "https://3tched.com/ns/oscal",
+      "value": "[{\"plugin\": \"identity_sled\", \"method\": \"get_identity\", \"capability\": \"identity_sled.read\", \"blob\": \"identity_sled.bb45d8f4ddc6edec.blob\", \"status\": \"sealed\"}, {\"plugin\": \"web3\", \"method\": \"anchor\", \"capability\": null, \"blob\": null, \"status\": \"unsealed:no-blob\"}]"
      }
     ]
    }

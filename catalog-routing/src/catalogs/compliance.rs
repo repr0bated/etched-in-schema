@@ -194,6 +194,61 @@ mod tests {
     }
 
     #[test]
+    fn table_matches_sealed_catalog() {
+        // The OSCAL catalog is the authority; the table must mirror its
+        // `sealed-operations` exactly (plugin, method, capability).
+        let raw = include_str!("../../../oscal/catalogs/etched-catalog/catalog.json");
+        let catalog: serde_json::Value = serde_json::from_str(raw).unwrap();
+        let controls = catalog["catalog"]["controls"].as_array().unwrap();
+        let all_tags = ["pii", "audit", "access-control", "retention", "integrity"];
+        let prof: Vec<String> = controls
+            .iter()
+            .map(|c| c["id"].as_str().unwrap().to_string())
+            .collect();
+        for tag in all_tags {
+            let matched = match_controls(&[tag.to_string()], &prof);
+            assert_eq!(matched.len(), 1, "tag {tag}");
+            let control = controls
+                .iter()
+                .find(|c| {
+                    c["props"]
+                        .as_array()
+                        .unwrap()
+                        .iter()
+                        .any(|p| p["name"] == "tag" && p["value"] == tag)
+                })
+                .unwrap();
+            let sealed: Vec<(String, String, Option<String>)> = {
+                let raw_ops = control["props"]
+                    .as_array()
+                    .unwrap()
+                    .iter()
+                    .find(|p| p["name"] == "sealed-operations")
+                    .unwrap()["value"]
+                    .as_str()
+                    .unwrap();
+                serde_json::from_str::<Vec<serde_json::Value>>(raw_ops)
+                    .unwrap()
+                    .iter()
+                    .map(|o| {
+                        (
+                            o["plugin"].as_str().unwrap().to_string(),
+                            o["method"].as_str().unwrap().to_string(),
+                            o["capability"].as_str().map(str::to_string),
+                        )
+                    })
+                    .collect()
+            };
+            let tabled: Vec<(String, String, Option<String>)> = matched[0]
+                .operations
+                .iter()
+                .map(|o| (o.plugin.clone(), o.method.clone(), o.capability.clone()))
+                .collect();
+            assert_eq!(tabled, sealed, "tag {tag} diverged from catalog");
+        }
+    }
+
+    #[test]
     fn root_marker_detected() {
         assert!(is_root(&["approval:root".into()]));
         assert!(!is_root(&["action:write".into()]));
