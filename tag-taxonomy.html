@@ -35,7 +35,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-fe26ca24.js";
+            window.path_to_searchindex_js = "searchindex-07be8b79.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-e5db6bcb.js"></script>
@@ -189,14 +189,14 @@ the draft, the registry is authoritative at runtime.</p>
 <div class="table-wrapper">
 <table>
 <thead>
-<tr><th>Tag</th><th>Control</th><th>Plugin operations (candidate)</th><th>Evidence</th></tr>
+<tr><th>Tag</th><th>Control</th><th>Sealed operations (candidate)</th><th>Evidence</th></tr>
 </thead>
 <tbody>
-<tr><td><code>pii</code></td><td><code>etched-pt-1</code></td><td><code>schema_tag_registry/tag-registry.get-policy</code> (evaluate redaction policy)</td><td>redaction receipt naming policy</td></tr>
-<tr><td><code>audit</code></td><td><code>etched-au-1</code></td><td><code>identity_sled/*</code>, <code>routing_decision/*</code></td><td>operation receipt (<code>operation_id</code>, <code>event_hash</code>)</td></tr>
-<tr><td><code>access-control</code></td><td><code>etched-ac-1</code></td><td><code>elevation/authorize_task</code>, <code>schema_tag_registry/*</code></td><td>refusal receipt (missing capability + rule); approval record</td></tr>
-<tr><td><code>retention</code></td><td><code>etched-si-1</code></td><td><code>cron/schedule</code>, <code>workflows/*</code></td><td>scheduled-operation receipt</td></tr>
-<tr><td><code>integrity</code></td><td><code>etched-in-1</code></td><td><code>identity_sled/*</code> (event hash) → <code>web3/</code> index → on-chain anchor</td><td>anchor record (index entry + tx)</td></tr>
+<tr><td><code>pii</code></td><td><code>etched-pt-1</code></td><td><code>schema_tag_registry/get_policy</code></td><td>redaction receipt naming policy</td></tr>
+<tr><td><code>audit</code></td><td><code>etched-au-1</code></td><td><code>identity_sled/get_own_identity</code>, <code>routing_decision/get_decision</code>, <code>routing_decision/list_decisions</code></td><td>operation receipt (<code>operation_id</code>, <code>event_hash</code>)</td></tr>
+<tr><td><code>access-control</code></td><td><code>etched-ac-1</code></td><td><code>elevation/authorize_task</code>, <code>schema_tag_registry/get_tag</code></td><td>refusal receipt (missing capability + rule); approval record</td></tr>
+<tr><td><code>retention</code></td><td><code>etched-si-1</code></td><td><code>cron/create_job</code>, <code>workflows/start_workflow</code></td><td>scheduled-operation receipt</td></tr>
+<tr><td><code>integrity</code></td><td><code>etched-in-1</code></td><td><code>identity_sled/get_identity</code>; anchor needs a sealed <code>web3</code> method (none yet — drafts only)</td><td>anchor record (index entry + tx)</td></tr>
 </tbody>
 </table>
 </div>

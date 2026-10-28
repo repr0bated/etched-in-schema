@@ -35,7 +35,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-fe26ca24.js";
+            window.path_to_searchindex_js = "searchindex-07be8b79.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-e5db6bcb.js"></script>
@@ -193,21 +193,13 @@ Decision  { route_ref, verdict: allow | refuse | needs-approval,
 Outcome   { decision_ref, operation_id?, event_hash?, outcome, redaction? } // receipt fields, proven today
 </code></pre>
 <h2 id="tag--control--operation-table-initial"><a class="header" href="#tag--control--operation-table-initial">Tag → control → operation table (initial)</a></h2>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>Request example</th><th>Tags</th><th>Controls</th><th>Candidate operations</th></tr>
-</thead>
-<tbody>
-<tr><td>publish portal article</td><td><code>pii</code>, <code>action:publish</code></td><td><code>etched-pt-1</code>, <code>etched-au-1</code>, <code>etched-in-1</code></td><td><code>schema_tag_registry/tag-registry.get-policy</code> → redacted publish → index</td></tr>
-<tr><td>show my receipts</td><td><code>audit</code>, <code>action:read</code></td><td><code>etched-au-1</code></td><td><code>identity_sled/*</code>, <code>routing_decision/*</code></td></tr>
-<tr><td>add staff member</td><td><code>access-control</code>, <code>action:write</code></td><td><code>etched-ac-1</code>, <code>etched-au-1</code></td><td><code>elevation/authorize_task</code> (if root: 2 approvals)</td></tr>
-<tr><td>set 90-day expiry</td><td><code>retention</code>, <code>action:write</code></td><td><code>etched-si-1</code>, <code>etched-au-1</code></td><td><code>cron/schedule</code>, <code>workflows/*</code></td></tr>
-<tr><td>anchor release</td><td><code>integrity</code>, <code>approval:root</code></td><td><code>etched-in-1</code>, <code>etched-ac-1</code></td><td>index entry → anchor (2 approvals)</td></tr>
-<tr><td>out-of-bounds op</td><td>any</td><td>matching control</td><td><strong>refuse</strong>: <code>{missing_capability, rule}</code> — first-class result</td></tr>
-</tbody>
-</table>
-</div>
+<p>| publish portal article | <code>pii</code>, <code>action:publish</code> | <code>etched-pt-1</code>, <code>etched-au-1</code>, <code>etched-in-1</code> | <code>schema_tag_registry/get_policy</code> → redacted publish → index |
+| show my receipts | <code>audit</code>, <code>action:read</code> | <code>etched-au-1</code> | <code>identity_sled/get_own_identity</code>, <code>routing_decision/get_decision</code> |
+| add staff member | <code>access-control</code>, <code>action:write</code> | <code>etched-ac-1</code>, <code>etched-au-1</code> | <code>elevation/authorize_task</code> (if root: 2 approvals) |
+| set 90-day expiry | <code>retention</code>, <code>action:write</code> | <code>etched-si-1</code>, <code>etched-au-1</code> | <code>cron/create_job</code>, <code>workflows/start_workflow</code> |
+| anchor release | <code>integrity</code>, <code>approval:root</code> | <code>etched-in-1</code>, <code>etched-ac-1</code> | index entry → anchor (2 approvals; anchor needs a sealed method) |
+| out-of-bounds op | any | matching control | <strong>refuse</strong>: <code>{missing_capability, rule}</code> — first-class result |
+| unsealed candidate | any | matching control | <strong>refuse</strong>: <code>method-not-sealed:&lt;plugin&gt;.&lt;method&gt;</code> — fail closed |</p>
 <h2 id="decisions-and-rendering"><a class="header" href="#decisions-and-rendering">Decisions and rendering</a></h2>
 <ul>
 <li><code>allow</code> → enforcement runs the op through the identity mount; <code>Outcome</code> renders with the <code>receipt</code> component.</li>
