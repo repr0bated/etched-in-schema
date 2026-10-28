@@ -35,7 +35,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-441ab2f1.js";
+            window.path_to_searchindex_js = "searchindex-120accfc.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-032c8853.js"></script>
@@ -248,7 +248,7 @@ corpora). Voyage-4 embeddings, 1024 dimensions, one fused space.</p>
 <h2 id="models-and-chat"><a class="header" href="#models-and-chat">Models and chat</a></h2>
 <ul>
 <li>Router: zeroclaw on <code>127.0.0.1:8084</code> (<code>zeroclaw.v1</code>), agent <code>dashboard</code>
-used by chat. Currently Salad <code>qwen3.5-35b-a3b</code>; Meta not yet wired.</li>
+used by chat. Currently Salad <code>qwen3.5-35b-a3b</code>. The product calls Meta’s Model API directly, not through this router (see <code>docs/RUNTIME.md</code>).</li>
 <li>MCP: compact OP-DBUS tools at <code>https://&lt;door-ip&gt;:8090/mcp?opdbus_mode=compact</code>.</li>
 <li>UI: <code>http://&lt;door-ip&gt;:8080</code> (door <code>&lt;door-ip&gt;:8090</code>).</li>
 </ul>

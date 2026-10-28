@@ -35,7 +35,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-441ab2f1.js";
+            window.path_to_searchindex_js = "searchindex-120accfc.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-032c8853.js"></script>
@@ -263,7 +263,7 @@ refusal silently).</p>
 <li>A refusal is a first-class result, rendered with the missing capability and
 the rule.</li>
 <li>Approvals are collected on the target (chat buttons) and counted by the
-policy engine; root actions need two different humans.</li>
+policy engine; root actions need two approvals — the owner and the policy co-signer (see <code>docs/APPROVALS-SPEC.md</code>).</li>
 <li>Redaction is applied by policy before content reaches any target; the
 receipt records it.</li>
 </ul>
@@ -296,8 +296,7 @@ enforcement, so every surface behaves identically.</p>
 shows the result and its receipt (operation id, outcome).</li>
 <li>An out-of-bounds request is refused in team chat with the exact missing
 capability and the rule.</li>
-<li>A root-level request shows an approval request and runs only after two
-different humans approve.</li>
+<li>A root-level request shows an approval request and runs only after both the owner and the policy co-signer approve (see <code>docs/APPROVALS-SPEC.md</code>).</li>
 <li>Content with PII posted through the drop-in is redacted before display,
 with a redaction notice and receipt.</li>
 <li>The model (Meta) generates a spec from the catalog; invalid specs are

@@ -35,7 +35,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-441ab2f1.js";
+            window.path_to_searchindex_js = "searchindex-120accfc.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-032c8853.js"></script>
@@ -181,8 +181,9 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="approvals"><a class="header" href="#approvals">approvals</a></h1>
-<p>Rust implementation of <code>docs/APPROVALS-SPEC.md</code> §§4–7 (planned; pure logic,
-no I/O or network): structured <code>ApprovalRequest</code> with canonical argument
+<p>Rust implementation of <code>docs/APPROVALS-SPEC.md</code> §§4–7 — <strong>implemented as pure
+logic (12 tests pass); not yet wired</strong> into the bridge, the co-signer model call
+or the runtime (no I/O or network): structured <code>ApprovalRequest</code> with canonical argument
 hashing, the co-signer truth table over model judgments, single-use tickets
 bound to request/args/executor/TTL. Tests cover acceptance criteria 3
 (free text cannot move the co-signer) and 5 (reuse/args-change/expiry refused).</p>

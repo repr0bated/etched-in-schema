@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-441ab2f1.js";
+            window.path_to_searchindex_js = "searchindex-120accfc.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-032c8853.js"></script>
@@ -470,9 +470,7 @@ on-chain → a judge verifies it themselves.</li>
 it only if it fits the flow.</p>
 <h2 id="known-open-issues"><a class="header" href="#known-open-issues">Known open issues</a></h2>
 <ul>
-<li>Meta model not yet wired into the router (no Meta API key on the host;
-Junie reaches Muse Spark through its JetBrains login). Hermes has a <code>Meta</code>
-custom provider stub (<code>HERMES_CUSTOM_META_API_KEY</code>).</li>
+<li><del>Meta model not wired</del> — resolved 2026-10-28: Meta’s Model API (<code>https://api.meta.ai/v1</code>, <code>muse-spark-1.3</code>) is wired for development (<code>~/.bash_secrets</code>) and the running service (<code>/home/3tched/.config/etched/env</code>); see <code>docs/RUNTIME.md</code>. 3tched’s own chat router still uses a Qwen model.</li>
 <li>Router turn costs ~15k tokens (skills bundle removed to halve it). Qwen does
 not reliably emit text tool calls; MCP compact tools are connected
 (<code>https://&lt;door-ip&gt;:8090/mcp</code>) but retrieval answers came back empty.</li>
@@ -645,7 +643,7 @@ refusal silently).</p>
 <li>A refusal is a first-class result, rendered with the missing capability and
 the rule.</li>
 <li>Approvals are collected on the target (chat buttons) and counted by the
-policy engine; root actions need two different humans.</li>
+policy engine; root actions need two approvals — the owner and the policy co-signer (see <code>docs/APPROVALS-SPEC.md</code>).</li>
 <li>Redaction is applied by policy before content reaches any target; the
 receipt records it.</li>
 </ul>
@@ -678,8 +676,7 @@ enforcement, so every surface behaves identically.</p>
 shows the result and its receipt (operation id, outcome).</li>
 <li>An out-of-bounds request is refused in team chat with the exact missing
 capability and the rule.</li>
-<li>A root-level request shows an approval request and runs only after two
-different humans approve.</li>
+<li>A root-level request shows an approval request and runs only after both the owner and the policy co-signer approve (see <code>docs/APPROVALS-SPEC.md</code>).</li>
 <li>Content with PII posted through the drop-in is redacted before display,
 with a redaction notice and receipt.</li>
 <li>The model (Meta) generates a spec from the catalog; invalid specs are
@@ -1037,7 +1034,7 @@ corpora). Voyage-4 embeddings, 1024 dimensions, one fused space.</p>
 <h2 id="models-and-chat"><a class="header" href="#models-and-chat">Models and chat</a></h2>
 <ul>
 <li>Router: zeroclaw on <code>127.0.0.1:8084</code> (<code>zeroclaw.v1</code>), agent <code>dashboard</code>
-used by chat. Currently Salad <code>qwen3.5-35b-a3b</code>; Meta not yet wired.</li>
+used by chat. Currently Salad <code>qwen3.5-35b-a3b</code>. The product calls Meta’s Model API directly, not through this router (see <code>docs/RUNTIME.md</code>).</li>
 <li>MCP: compact OP-DBUS tools at <code>https://&lt;door-ip&gt;:8090/mcp?opdbus_mode=compact</code>.</li>
 <li>UI: <code>http://&lt;door-ip&gt;:8080</code> (door <code>&lt;door-ip&gt;:8090</code>).</li>
 </ul>
@@ -1360,8 +1357,9 @@ enforcement stay separate crates. Model (Muse Spark) supplies judgments
 <p>Boundary compiler: OSCAL rules → capability grants, router budgets, OpenFlow policy. Enforcement itself is the existing bridge capability check and the <code>openflow</code> plugin.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="approvals"><a class="header" href="#approvals">approvals</a></h1>
-<p>Rust implementation of <code>docs/APPROVALS-SPEC.md</code> §§4–7 (planned; pure logic,
-no I/O or network): structured <code>ApprovalRequest</code> with canonical argument
+<p>Rust implementation of <code>docs/APPROVALS-SPEC.md</code> §§4–7 — <strong>implemented as pure
+logic (12 tests pass); not yet wired</strong> into the bridge, the co-signer model call
+or the runtime (no I/O or network): structured <code>ApprovalRequest</code> with canonical argument
 hashing, the co-signer truth table over model judgments, single-use tickets
 bound to request/args/executor/TTL. Tests cover acceptance criteria 3
 (free text cannot move the co-signer) and 5 (reuse/args-change/expiry refused).</p>
