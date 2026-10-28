@@ -76,7 +76,7 @@ user action (web click / team chat button / team chat command)
 - A refusal is a first-class result, rendered with the missing capability and
   the rule.
 - Approvals are collected on the target (chat buttons) and counted by the
-  policy engine; root actions need two different humans.
+  policy engine; root actions need two approvals — the owner and the policy co-signer (see `docs/APPROVALS-SPEC.md`).
 - Redaction is applied by policy before content reaches any target; the
   receipt records it.
 
@@ -109,8 +109,7 @@ enforcement, so every surface behaves identically.
    shows the result and its receipt (operation id, outcome).
 3. An out-of-bounds request is refused in team chat with the exact missing
    capability and the rule.
-4. A root-level request shows an approval request and runs only after two
-   different humans approve.
+4. A root-level request shows an approval request and runs only after both the owner and the policy co-signer approve (see `docs/APPROVALS-SPEC.md`).
 5. Content with PII posted through the drop-in is redacted before display,
    with a redaction notice and receipt.
 6. The model (Meta) generates a spec from the catalog; invalid specs are

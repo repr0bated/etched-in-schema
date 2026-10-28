@@ -99,9 +99,7 @@ it only if it fits the flow.
 
 ## Known open issues
 
-- Meta model not yet wired into the router (no Meta API key on the host;
-  Junie reaches Muse Spark through its JetBrains login). Hermes has a `Meta`
-  custom provider stub (`HERMES_CUSTOM_META_API_KEY`).
+- ~~Meta model not wired~~ — resolved 2026-10-28: Meta's Model API (`https://api.meta.ai/v1`, `muse-spark-1.3`) is wired for development (`~/.bash_secrets`) and the running service (`/home/3tched/.config/etched/env`); see `docs/RUNTIME.md`. 3tched's own chat router still uses a Qwen model.
 - Router turn costs ~15k tokens (skills bundle removed to halve it). Qwen does
   not reliably emit text tool calls; MCP compact tools are connected
   (`https://<door-ip>:8090/mcp`) but retrieval answers came back empty.

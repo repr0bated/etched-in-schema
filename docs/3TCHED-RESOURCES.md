@@ -72,7 +72,7 @@ corpora). Voyage-4 embeddings, 1024 dimensions, one fused space.
 ## Models and chat
 
 - Router: zeroclaw on `127.0.0.1:8084` (`zeroclaw.v1`), agent `dashboard`
-  used by chat. Currently Salad `qwen3.5-35b-a3b`; Meta not yet wired.
+  used by chat. Currently Salad `qwen3.5-35b-a3b`. The product calls Meta's Model API directly, not through this router (see `docs/RUNTIME.md`).
 - MCP: compact OP-DBUS tools at `https://<door-ip>:8090/mcp?opdbus_mode=compact`.
 - UI: `http://<door-ip>:8080` (door `<door-ip>:8090`).
 
