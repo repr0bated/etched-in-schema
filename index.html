@@ -35,7 +35,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-d28378e4.js";
+            window.path_to_searchindex_js = "searchindex-c6245253.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-e5db6bcb.js"></script>
@@ -201,7 +201,10 @@ and returns a receipt. No MCP, no direct API calls, no <code>ovs-*</code> comman
 Every new method built here follows: <strong>logic in this repo → plugin
 registration → sealed blob → operation file in the mount → call → receipt.</strong>
 The UI is derived from the same blobs: screens from sealed schemas, actions
-call the same sealed methods and show their receipts.
+call the same sealed methods and show their receipts. Each plugin is a
+<strong>schema feed</strong> (schema + committed state, streamed); state has one writer
+(MutationEngine) and is archived as receipts, Btrfs snowball snapshots and
+vectors.
 See <a href="docs/DEV-CYCLE.html"><code>docs/DEV-CYCLE.md</code></a>.</p>
 </blockquote>
 <h2 id="why"><a class="header" href="#why">Why</a></h2>

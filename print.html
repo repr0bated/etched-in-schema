@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-d28378e4.js";
+            window.path_to_searchindex_js = "searchindex-c6245253.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-e5db6bcb.js"></script>
@@ -228,6 +228,59 @@ method built for the hackathon follows this path — that is the dev cycle.</p>
 render and call it. Hand-written UI is only for composition and the
 governance components (receipt, refusal, approval request, redaction notice).
 No MCP anywhere in the UI path.</p>
+<h2 id="each-plugin-is-a-schema-feed"><a class="header" href="#each-plugin-is-a-schema-feed">Each plugin is a schema feed</a></h2>
+<p>A sealed plugin is not only callable — it <strong>publishes itself</strong>. Subscribers
+(the UI, the identity) receive one stream per plugin over the bridge’s
+<code>Subscribe</code>:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Frame</th><th>Carries</th></tr>
+</thead>
+<tbody>
+<tr><td>schema frame (<code>SCHEMA_MIGRATION</code>)</td><td>the plugin’s sealed schema and its schema hash, so a consumer can render forms and validate before calling</td></tr>
+<tr><td>state frames</td><td>committed values per object path, each with a <strong>generation</strong> number (older generations are ignored) and the catalog hash</td></tr>
+<tr><td>tombstones</td><td>deletions, so a removed object never reappears from an older frame</td></tr>
+<tr><td>withheld</td><td>private state the subscriber is not entitled to stays withheld (<code>withheld-or-unavailable</code>)</td></tr>
+</tbody>
+</table>
+</div>
+<p>The UI keeps feed data under <code>/plugins</code> and <code>/pluginFeeds</code> <strong>read-only</strong>: a
+UI can never write state into a feed; only a sealed method call changes it.</p>
+<h2 id="how-state-is-read"><a class="header" href="#how-state-is-read">How state is read</a></h2>
+<p>State has one writer: <strong>MutationEngine</strong>, which commits the result of each
+admitted call and only then notifies subscribers. Readers never see an
+uncommitted value.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Reader</th><th>How</th></tr>
+</thead>
+<tbody>
+<tr><td>Live consumers (UI, identity)</td><td>the plugin’s <strong>schema feed</strong> (above) — values derived from committed state, never from a request payload</td></tr>
+<tr><td>Point-in-time</td><td>committed state in shared memory, <code>/dev/shm/opdbus/state/&lt;plugin&gt;.json</code> (root-only; e.g. <code>incus</code>, <code>identity_sled</code>, <code>chat_router</code>, <code>cron</code>, <code>json_render</code>)</td></tr>
+<tr><td>Through the mount</td><td>the plugin’s read operations (<code>operations/&lt;plugin&gt;/&lt;read-method&gt;/call</code>). The mount’s <code>plugins/&lt;id&gt;/value.json</code> files are meant for this but currently return EIO — use read operations</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="how-state-is-archived"><a class="header" href="#how-state-is-archived">How state is archived</a></h2>
+<p>Nothing is overwritten without a record; history is kept in layers:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Layer</th><th>Where</th><th>What it holds</th></tr>
+</thead>
+<tbody>
+<tr><td>Receipts / chain</td><td>MutationEngine chain events (<code>operation_id</code>, <code>event_id</code>, <code>event_hash</code>, hash-linked)</td><td>who did what, under which capability, with which outcome</td></tr>
+<tr><td>Snowball</td><td><code>/var/lib/opdbus/snowball/{timing,vectors,state,snapshots}</code> — Btrfs subvolumes</td><td>a streaming audit trail of plugin footprints, automatic read-only snapshots with rolling retention, replicable with btrfs send/receive</td></tr>
+<tr><td>Vectors</td><td>Qdrant <code>snowball_footprints</code> (~10k entries)</td><td>the archived footprints embedded for semantic search (“what changed in X last week?”)</td></tr>
+<tr><td>Sealed catalog</td><td><code>/var/lib/opdbus/plugin-blobs</code> (persisted copy of the live catalog)</td><td>which methods existed, by blob hash</td></tr>
+</tbody>
+</table>
+</div>
+<p>For the hackathon this is what makes “every action is attributable” checkable:
+a receipt in the UI points at a chain event, the snowball keeps the state it
+produced, and the Web3 index can anchor the chain head.</p>
 <h2 id="steps-for-a-new-method-eg-approvalsrequest_approval"><a class="header" href="#steps-for-a-new-method-eg-approvalsrequest_approval">Steps for a new method (e.g. <code>approvals.request_approval</code>)</a></h2>
 <ol>
 <li><strong>Logic, in this repo.</strong> Types, rules and tests in a crate here (e.g.
@@ -291,7 +344,10 @@ and returns a receipt. No MCP, no direct API calls, no <code>ovs-*</code> comman
 Every new method built here follows: <strong>logic in this repo → plugin
 registration → sealed blob → operation file in the mount → call → receipt.</strong>
 The UI is derived from the same blobs: screens from sealed schemas, actions
-call the same sealed methods and show their receipts.
+call the same sealed methods and show their receipts. Each plugin is a
+<strong>schema feed</strong> (schema + committed state, streamed); state has one writer
+(MutationEngine) and is archived as receipts, Btrfs snowball snapshots and
+vectors.
 See <a href="docs/DEV-CYCLE.html"><code>docs/DEV-CYCLE.md</code></a>.</p>
 </blockquote>
 <h2 id="why"><a class="header" href="#why">Why</a></h2>
