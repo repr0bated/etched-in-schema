@@ -10,8 +10,8 @@ receipt, and anchored on a blockchain so anyone can verify *who did what,
 under what authority, and what actually happened* without trusting the agent
 or its operator.
 
-Built for the Meta Model API hackathon (Indie Dev Track) by Jeremy Hobson,
-founder of 3tched.
+Built for the Meta Model API hackathon (Startup Track — judged on a working
+product) by Jeremy Hobson, founder of 3tched.
 
 ## Why
 
@@ -28,28 +28,38 @@ points to the identity and authorised operation behind it, and every
 operation points to the artifacts it produced, with the history anchored
 on-chain.
 
-## Goals
+## Goals — the new, judged product
 
-1. **Embodiment** — the identity presents itself (avatar, first person),
-   explains what it is, and answers questions grounded in its own record.
-2. **Compliance by construction** — a business declaration becomes an OSCAL
-   profile; OSCAL tags route each requirement to the plugins that implement
-   it; boundary rules compile into capability grants and OpenFlow network
-   policy that are enforced, not just documented.
-3. **"Create a CMS for this business"** — the identity provisions a usable CMS
-   whose controls (PII redaction, audit, access control, retention,
-   integrity) are visible on stage and evidenced by receipts.
-4. **Verifiable on-chain** — a Web3 index of everything the identity creates,
-   each entry linked to its receipt, with the index root anchored on-chain.
+The identity platform (3tched) existed before the hackathon and is used only
+through its interfaces. The **new development, built and judged here**, is:
 
-**Golden path** (must work three times in a row before any stretch goal):
-scripted intro → "create a CMS for this business" from one small declaration
-and one OSCAL profile → the identity provisions it through its own mount,
-with a visible trace and receipts → one receipt anchored on-chain → a judge
-verifies it themselves.
+1. **Compliance routing** — a business's requirements become an OSCAL profile;
+   OSCAL tags route each request and each requirement to the components and
+   plugin operations that implement it.
+2. **Rule enforcement** — boundary rules compile into the capability grants,
+   budgets and network policy that are enforced on every call, with a clear
+   refusal (and the exact missing capability) when a request is out of bounds.
+3. **Policy** — authoring, versioning and evaluating the rules: what each
+   identity may do, which actions need human approval (two approvals for root),
+   and what happens to data (e.g. PII redaction, retention).
+4. **Drop-in consumer app** — a module that brings governed agent actions into
+   tools people already use, starting with **Slack** (then e.g. Teams, email).
+   A user asks in Slack; the request is routed, checked against policy,
+   executed through the identity or refused, and the receipt comes back in the
+   thread.
 
-Out of scope: moving identities between hosts. Optional: a live
-client-acquisition attempt, only if it fits the flow.
+The web UI is optional, only if time allows.
+
+**Golden path** (a working product, end to end, three times in a row before
+anything else): a user asks the agent in Slack to do something for a business
+→ compliance routing maps it to the required controls and operations →
+policy is evaluated → allowed operations run through the identity and return
+receipts; a disallowed one is refused with the reason → the thread shows the
+result, the receipts, and any redaction applied.
+
+Out of the critical path: the avatar/embodiment, moving identities between
+hosts, client acquisition, and on-chain anchoring (kept only if it fits once
+the golden path works).
 
 ## What is new vs. what already exists
 
@@ -57,15 +67,18 @@ Everything in **this repository** is developed during the hackathon. It is
 built *on* 3tched, which already exists and is used only through its
 published interfaces (see [docs/3TCHED-RESOURCES.md](docs/3TCHED-RESOURCES.md)).
 
-| New in this repo | Existing 3tched resource it uses |
+| New in this repo (judged) | Existing 3tched resource it uses |
 |---|---|
 | OSCAL catalog of 3tched capabilities, tag taxonomy, profiles, component definitions | `oscal_subid_registry` (subid discovery), `schema_tag_registry` (tag metadata, owner-scoped policy) |
-| Tag router: profile → components → plugin operations | sealed plugin catalog, identity operation files (3tchedFS) |
-| Boundary compiler: OSCAL rules → capability grants, budgets, OpenFlow policy | bridge capability enforcement, `openflow` / `ovsdb_bridge` plugins, router budgets |
-| CMS with evidenced controls (redaction, audit, roles, retention, integrity) | identity container, receipts, Qdrant/Cozo |
+| Compliance router: request / profile → controls → plugin operations | sealed plugin catalog, identity operation files (3tchedFS) |
+| Rule enforcement: OSCAL rules → capability grants, budgets, OpenFlow policy; refusals with reasons | bridge per-call capability check, `openflow` / `ovsdb_bridge`, router budgets |
+| Policy engine and policy documents (approvals, redaction, retention) | `schema_tag_registry` policies, `routing_decision`, `elevation` |
+| Drop-in consumer app: Slack first | chat path to Meta's model, identity receipts |
 | Business declarations (starting with a Florida LLC) | — |
-| Web3 index + on-chain anchoring | chain events / operation receipts |
-| Avatar, trace and OSCAL views (Svelte + json-render) | 3tched.com UI, chat path |
+
+Pre-existing and **not** part of the judged work: the identity container and
+sled, kernel-peer admission, 3tchedFS, the bridge and MutationEngine, receipts,
+the router, and the 3tched.com UI.
 
 ## Architecture at a glance
 
