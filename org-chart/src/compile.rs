@@ -156,6 +156,7 @@ pub fn compile_pinned(
         sealed_catalog_hash: sealed_catalog_hash.map(str::to_string),
         ..Default::default()
     };
+    let mut granted: BTreeMap<(String, String), (String, String)> = BTreeMap::new();
     for position in &chart.positions {
         for role_id in &position.roles {
             let role = chart.role(role_id).expect("checked above");
