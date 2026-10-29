@@ -15,6 +15,7 @@ disabledProviders:
   - huggingface
   - kilo
   - litellm-fusion
+  - local
   - nous
   - ollama-cloud
   - openai
@@ -34,6 +35,11 @@ modelRoles:
   plan: meta/muse-spark-1.3
   advisor: meta/muse-spark-1.3
   judge: typesafe/jev-latest
+# Global config falls back meta/* -> local/*; here a Meta failure must surface
+# as an error, never silently switch to a local model.
+retry:
+  fallbackChains:
+    meta/*: []
 task:
   agentModelOverrides:
     scout: meta/muse-spark-1.1
