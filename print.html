@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-07be8b79.js";
+            window.path_to_searchindex_js = "searchindex-6b4b66ff.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-e5db6bcb.js"></script>
@@ -737,6 +737,9 @@ returns <code>omp-meta-ok</code> (~7s). Broker cred hash == <code>META_API_KEY</
 </li>
 <li>
 <p>2026-10-28: Docs auto-publish live: <code>book/</code> (mdBook guide, single-source symlinks) + rustdoc API combined by <code>tools/build-docs.sh</code> into <code>site/</code> (gitignored), deployed by <code>.github/workflows/docs.yml</code> to https://repr0bated.github.io/etched-in-schema/ (verified 200 on guide + API). Local: <code>mdbook</code> 0.5.4 via cargo.</p>
+</li>
+<li>
+<p>2026-10-29 (Claude): <strong>omp 404 <code>model_not_found</code> diagnosed — Meta-side, not local.</strong> Every <code>meta/muse-spark-*</code> ID 404s, including direct curl to <code>api.meta.ai/v1</code> (both <code>responses</code> and <code>chat/completions</code>) with omp bypassed; <code>/v1/models</code> returns HTTP 200 with <code>{"data":[]}</code>. omp’s cache shows an authoritative 5-model list at 2026-10-28 15:49Z; last success 23:39:48Z, first 404 23:56:31Z. Key file unchanged since 17:38Z. Owner reports the same setup works from the laptop; open: whether the laptop uses the same key. <code>.omp/config.yml</code>: added <code>local</code> to <code>disabledProviders</code> and <code>retry.fallbackChains.meta/*: []</code> (global config fell back <code>meta/*</code> -&gt; <code>local/lfm2.5-350m</code>, the tiny title model). Platform: <code>opblob seal-shm</code> changed <code>chat_router</code>/<code>threetched</code> blobs and the running bridge refused them (<code>compiled_sealed_contract_mismatch</code>); restored with <code>opblob stage-shm</code> from <code>/var/lib/opdbus/plugin-blobs</code>, <code>chat_router</code> verified working. Found: router config pins <code>model =</code> per provider (40 lines) and <code>chat_router</code> rejects any model other than the config’s native selection — models should come only from live provider catalogs (owner rule). Proposed bridge fix: <strong>Planned</strong> (owner approval pending). <code>/usr/local/bin/3tched-callfile</code> lacks a shebang (sh runs it; broken).</p>
 </li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div>
