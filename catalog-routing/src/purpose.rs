@@ -148,4 +148,69 @@ mod tests {
         };
         assert_eq!(expand(&purpose, &taxonomy()), Err(WorkflowError::Empty));
     }
+
+    #[test]
+    fn workflow_purpose_routes_to_allow() {
+        use crate::model::{ActionKind, Grants, Profile, Surface, Verdict};
+        let taxonomy = Taxonomy {
+            known_tags: vec!["audit".to_string(), "action:read".to_string()],
+            known_controls: vec!["audit".to_string()],
+        };
+        let purpose = WorkflowPurpose {
+            name: "receipts".to_string(),
+            tags: vec!["audit".to_string(), "action:read".to_string()],
+        };
+        let request = request_for(
+            "demo",
+            Surface::Web,
+            ActionKind::Read,
+            &purpose,
+            &taxonomy,
+            "payload:demo-1",
+        )
+        .unwrap();
+        let profile = Profile {
+            id: "demo".to_string(),
+            controls: vec!["etched-au-1".to_string()],
+        };
+        let grants = Grants {
+            capabilities: vec![
+                "cap.identity.sled.self.read@v1".to_string(),
+                "cap.governance.routing-decision.read@v1".to_string(),
+            ],
+        };
+        let decision = crate::decide(&request, &profile, &grants);
+        assert_eq!(decision.verdict, Verdict::Allow);
+    }
+
+    #[test]
+    fn unsealed_candidate_refuses_before_grants() {
+        use crate::model::{ActionKind, Grants, Profile, Surface, Verdict};
+        let taxonomy = Taxonomy {
+            known_tags: vec!["integrity".to_string()],
+            known_controls: vec!["integrity".to_string()],
+        };
+        let purpose = WorkflowPurpose {
+            name: "anchor".to_string(),
+            tags: vec!["integrity".to_string()],
+        };
+        let request = request_for(
+            "demo",
+            Surface::Web,
+            ActionKind::Publish,
+            &purpose,
+            &taxonomy,
+            "payload:demo-2",
+        )
+        .unwrap();
+        let profile = Profile {
+            id: "demo".to_string(),
+            controls: vec!["etched-in-1".to_string()],
+        };
+        let grants = Grants {
+            capabilities: vec!["identity_sled.read".to_string()],
+        };
+        let decision = crate::decide(&request, &profile, &grants);
+        assert!(matches!(decision.verdict, Verdict::Refuse { .. }));
+    }
 }

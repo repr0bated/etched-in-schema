@@ -13,7 +13,9 @@
 //! ```
 
 pub mod purpose;
+pub mod redaction;
 pub use purpose::{Taxonomy, WorkflowError, WorkflowPurpose, expand, request_for};
+pub use redaction::{Hit, clean, screen_text, screen_value};
 pub mod acceptance;
 pub mod catalogs;
 pub mod decide;
