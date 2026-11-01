@@ -144,6 +144,11 @@ pub fn clean(hits: &[Hit]) -> bool {
 /// non-overlapping by construction). Returns the masked text plus the
 /// count of masked spans, so the caller can receipt what was removed
 /// without ever logging the raw values.
+///
+/// Preview only: masked output does NOT clear publish. Publish still
+/// needs the sealed masking op plus its receipt naming the policy; this
+/// crate proposes, the bridge disposes. Treat any caller that publishes
+/// on `clean()` alone as a policy violation.
 pub fn mask_text(text: &str, hits: &[Hit]) -> (String, usize) {
     let mut out = String::with_capacity(text.len());
     let mut cursor = 0;
