@@ -124,4 +124,47 @@ mod tests {
         assert_eq!(got.id, "fixture-vision");
         assert!(select(&["model:video".into()], &registry).is_none());
     }
+
+    #[test]
+    fn dirty_payload_blocks_despite_allow() {
+        use crate::purpose::{Taxonomy, WorkflowPurpose, request_for};
+        use crate::redaction::{clean, screen_value};
+        use serde_json::json;
+        // End-user workflow: portal publish carrying the pii tag.
+        let taxonomy = Taxonomy {
+            known_tags: vec!["pii".into(), "action:publish".into()],
+            known_controls: vec!["pii".into()],
+        };
+        let request = request_for(
+            "principal-1",
+            Surface::Web,
+            ActionKind::Publish,
+            &WorkflowPurpose {
+                name: "portal".into(),
+                tags: vec!["pii".into(), "action:publish".into()],
+            },
+            &taxonomy,
+            "payload-1",
+        )
+        .unwrap();
+        let d = decide(&request, &profile(), &grants());
+        assert_eq!(d.verdict, Verdict::Allow);
+        // The allow does NOT clear publish: payload screens dirty.
+        let payload = json!({"body": "mail jane@example.com today"});
+        let hits = screen_value(&payload);
+        assert!(!clean(&hits));
+        // Masked preview still needs the sealed op receipt (stage-gated);
+        // the crate proposes, the bridge disposes.
+        let (masked, n) = crate::redaction::mask_value(&payload);
+        assert_eq!(n, 1);
+        assert!(clean(&screen_value(&masked)));
+    }
+
+    #[test]
+    fn clean_payload_passes_screen() {
+        use crate::redaction::{clean, screen_value};
+        use serde_json::json;
+        let payload = json!({"body": "our spring sale starts Monday"});
+        assert!(clean(&screen_value(&payload)));
+    }
 }
