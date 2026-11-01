@@ -13,7 +13,7 @@
 //! ```
 
 pub mod purpose;
-pub use purpose::{Purpose, PurposeError, Taxonomy, expand, request_for};
+pub use purpose::{Taxonomy, WorkflowError, WorkflowPurpose, expand, request_for};
 pub mod acceptance;
 pub mod catalogs;
 pub mod decide;

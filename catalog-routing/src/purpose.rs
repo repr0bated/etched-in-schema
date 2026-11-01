@@ -1,15 +1,17 @@
-//! End-user-driven purpose: promoted schema tags for one workflow.
+//! End-user workflow: promoted schema tags for one routing request.
 //!
-//! The end user names a purpose for their own declaration (business, CMS,
-//! workflow); the adapter expands it to tags against a caller-supplied
+//! The end user names a workflow for their own declaration (business, CMS,
+//! task); the adapter expands it to tags against a caller-supplied
 //! taxonomy snapshot. No I/O, no network, no default business baked in.
 //!
-//! Split that keeps this expandable without widening authority:
-//! * values are closed — every tag must be taxonomy-known;
-//! * combinations are open — any subset composes a new purpose;
-//! * tags never grant — [`crate::decide`] still partitions candidates
-//!   against the identity's compiled [`crate::model::Grants`].
-//! Unknown or control-less purposes fail here so `decide` refuses upstream.
+//! This is the routing layer, distinct from
+//! [`crate::catalogs::projection::Purpose`]: that closed enum selects a
+//! per-schema field-class view downstream (Vectorize/Display/Overlay);
+//! [`WorkflowPurpose`] below selects the tag set that [`crate::decide`]
+//! routes on upstream. Values are closed (taxonomy-known), combinations
+//! are open. Tags never grant — `decide` still partitions candidates
+//! against the identity's compiled [`crate::model::Grants`].
+//! Unknown or control-less workflows fail here so `decide` refuses upstream.
 
 use serde::{Deserialize, Serialize};
 
@@ -25,38 +27,41 @@ pub struct Taxonomy {
     pub known_controls: Vec<String>,
 }
 
-/// One end-user purpose: a name plus promoted schema tags.
+/// One end-user workflow: a name plus promoted schema tags.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Purpose {
+pub struct WorkflowPurpose {
     pub name: String,
     pub tags: Vec<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub enum PurposeError {
+pub enum WorkflowError {
     Empty,
     UnknownTag(String),
     NoControlTag,
 }
 
-impl std::fmt::Display for PurposeError {
+impl std::fmt::Display for WorkflowError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::Empty => write!(f, "purpose promotes no tags"),
+            Self::Empty => write!(f, "workflow promotes no tags"),
             Self::UnknownTag(tag) => write!(f, "tag is not taxonomy-known: {tag}"),
-            Self::NoControlTag => write!(f, "purpose carries no control tag"),
+            Self::NoControlTag => write!(f, "workflow carries no control tag"),
         }
     }
 }
 
-/// Expand a purpose to its tag set. Closed values, open combinations.
-pub fn expand(purpose: &Purpose, taxonomy: &Taxonomy) -> Result<Vec<String>, PurposeError> {
+/// Expand a workflow to its tag set. Closed values, open combinations.
+pub fn expand(
+    purpose: &WorkflowPurpose,
+    taxonomy: &Taxonomy,
+) -> Result<Vec<String>, WorkflowError> {
     if purpose.tags.is_empty() {
-        return Err(PurposeError::Empty);
+        return Err(WorkflowError::Empty);
     }
     for tag in &purpose.tags {
         if !taxonomy.known_tags.iter().any(|k| k == tag) {
-            return Err(PurposeError::UnknownTag(tag.clone()));
+            return Err(WorkflowError::UnknownTag(tag.clone()));
         }
     }
     if !purpose
@@ -64,20 +69,20 @@ pub fn expand(purpose: &Purpose, taxonomy: &Taxonomy) -> Result<Vec<String>, Pur
         .iter()
         .any(|t| taxonomy.known_controls.iter().any(|c| c == t))
     {
-        return Err(PurposeError::NoControlTag);
+        return Err(WorkflowError::NoControlTag);
     }
     Ok(purpose.tags.clone())
 }
 
-/// Build the adapter [`Request`] for one end-user purpose.
+/// Build the adapter [`Request`] for one end-user workflow.
 pub fn request_for(
     actor: &str,
     surface: Surface,
     action: ActionKind,
-    purpose: &Purpose,
+    purpose: &WorkflowPurpose,
     taxonomy: &Taxonomy,
     payload_ref: &str,
-) -> Result<Request, PurposeError> {
+) -> Result<Request, WorkflowError> {
     Ok(Request {
         actor: actor.to_string(),
         surface,
@@ -104,7 +109,7 @@ mod tests {
 
     #[test]
     fn open_combination_of_known_tags_passes() {
-        let purpose = Purpose {
+        let purpose = WorkflowPurpose {
             name: "portal".to_string(),
             tags: vec!["pii".to_string(), "action:publish".to_string()],
         };
@@ -113,31 +118,34 @@ mod tests {
 
     #[test]
     fn unknown_tag_fails_closed() {
-        let purpose = Purpose {
+        let purpose = WorkflowPurpose {
             name: "portal".to_string(),
             tags: vec!["pii".to_string(), "nope".to_string()],
         };
         assert_eq!(
             expand(&purpose, &taxonomy()),
-            Err(PurposeError::UnknownTag("nope".to_string()))
+            Err(WorkflowError::UnknownTag("nope".to_string()))
         );
     }
 
     #[test]
-    fn control_less_purpose_fails() {
-        let purpose = Purpose {
+    fn control_less_workflow_fails() {
+        let purpose = WorkflowPurpose {
             name: "portal".to_string(),
             tags: vec!["action:publish".to_string()],
         };
-        assert_eq!(expand(&purpose, &taxonomy()), Err(PurposeError::NoControlTag));
+        assert_eq!(
+            expand(&purpose, &taxonomy()),
+            Err(WorkflowError::NoControlTag)
+        );
     }
 
     #[test]
-    fn empty_purpose_fails() {
-        let purpose = Purpose {
+    fn empty_workflow_fails() {
+        let purpose = WorkflowPurpose {
             name: "portal".to_string(),
             tags: vec![],
         };
-        assert_eq!(expand(&purpose, &taxonomy()), Err(PurposeError::Empty));
+        assert_eq!(expand(&purpose, &taxonomy()), Err(WorkflowError::Empty));
     }
 }
