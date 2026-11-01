@@ -12,6 +12,8 @@
 //!   → decide                               (allow | refuse | needs-approval)
 //! ```
 
+pub mod purpose;
+pub use purpose::{Purpose, PurposeError, Taxonomy, expand, request_for};
 pub mod acceptance;
 pub mod catalogs;
 pub mod decide;
