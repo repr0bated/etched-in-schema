@@ -139,6 +139,66 @@ pub fn clean(hits: &[Hit]) -> bool {
     hits.is_empty()
 }
 
+/// Deterministic mask: replace every hit span with `[redacted:<rule>]`.
+/// Spans must come from [`screen_text`] on the same input (ordered,
+/// non-overlapping by construction). Returns the masked text plus the
+/// count of masked spans, so the caller can receipt what was removed
+/// without ever logging the raw values.
+pub fn mask_text(text: &str, hits: &[Hit]) -> (String, usize) {
+    let mut out = String::with_capacity(text.len());
+    let mut cursor = 0;
+    let mut count = 0;
+    for hit in hits {
+        if hit.start < cursor || hit.end > text.len() || hit.start >= hit.end {
+            continue;
+        }
+        out.push_str(&text[cursor..hit.start]);
+        out.push_str("[redacted:");
+        out.push_str(hit.rule);
+        out.push(']');
+        cursor = hit.end;
+        count += 1;
+    }
+    out.push_str(&text[cursor..]);
+    (out, count)
+}
+
+/// Mask every string in a JSON value. Object keys are masked too.
+pub fn mask_value(value: &Value) -> (Value, usize) {
+    match value {
+        Value::String(s) => {
+            let (masked, n) = mask_text(s, &screen_text(s));
+            (Value::String(masked), n)
+        }
+        Value::Array(items) => {
+            let mut total = 0;
+            let masked = items
+                .iter()
+                .map(|item| {
+                    let (m, n) = mask_value(item);
+                    total += n;
+                    m
+                })
+                .collect();
+            (Value::Array(masked), total)
+        }
+        Value::Object(map) => {
+            let mut total = 0;
+            let masked = map
+                .iter()
+                .map(|(k, v)| {
+                    let (mk, nk) = mask_text(k, &screen_text(k));
+                    let (mv, nv) = mask_value(v);
+                    total += nk + nv;
+                    (mk, mv)
+                })
+                .collect();
+            (Value::Object(masked), total)
+        }
+        _ => (value.clone(), 0),
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -184,5 +244,26 @@ mod tests {
             start: 0,
             end: 1
         }]));
+    }
+
+    #[test]
+    fn masker_replaces_hits_and_counts() {
+        let text = "mail jane@example.com or 5551234567";
+        let (masked, n) = mask_text(text, &screen_text(text));
+        assert_eq!(n, 2);
+        assert!(!masked.contains("jane@example.com"));
+        assert!(!masked.contains("5551234567"));
+        assert!(masked.contains("[redacted:email]"));
+        assert!(masked.contains("[redacted:phone-digits]"));
+    }
+
+    #[test]
+    fn masker_is_total_over_json() {
+        let v = json!({"contact": "a@b.co", "note": "clean", "n": 7});
+        let (masked, n) = mask_value(&v);
+        assert_eq!(n, 1);
+        assert_eq!(masked["note"], json!("clean"));
+        assert_eq!(masked["n"], json!(7));
+        assert!(!masked["contact"].as_str().unwrap().contains("a@b.co"));
     }
 }
